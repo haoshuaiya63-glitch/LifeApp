@@ -1,0 +1,71 @@
+name: Build APK
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+
+      - uses: android-actions/setup-android@v3
+
+      - name: Install Cordova
+        run: npm install -g cordova
+
+      - name: Prepare www from repo root
+        run: |
+          mkdir -p www
+          # 把根目录下除了构建相关文件外的所有东西复制到 www/
+          shopt -s extglob dotglob
+          for f in *; do
+            case "$f" in
+              www|.git|.github|config.xml|platforms|plugins|node_modules|res) ;;
+              *) cp -r "$f" www/ ;;
+            esac
+          done
+          ls -la www
+
+      - name: Create transparent splash icon
+        run: |
+          mkdir -p res
+          python3 - <<'EOF'
+          import zlib, struct
+          def ch(t, d):
+              c = struct.pack('>I', len(d)) + t + d
+              return c + struct.pack('>I', zlib.crc32(t + d) & 0xffffffff)
+          raw = b'\x00\x00\x00\x00\x00'
+          png = (b'\x89PNG\r\n\x1a\n'
+                 + ch(b'IHDR', struct.pack('>IIBBBBB', 1, 1, 8, 6, 0, 0, 0))
+                 + ch(b'IDAT', zlib.compress(raw))
+                 + ch(b'IEND', b''))
+          open('res/transparent.png', 'wb').write(png)
+          EOF
+
+      - name: Add platform and plugins
+        run: |
+          cordova platform add android@13
+          cordova plugin add cordova-plugin-media
+          cordova plugin add cordova-plugin-file
+          cordova plugin add cordova-plugin-geolocation
+          cordova plugin add cordova-plugin-android-permissions
+
+      - name: Build debug APK
+        run: cordova build android --debug
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: app-debug-apk
+          path: platforms/android/app/build/outputs/apk/debug/app-debug.apk
