@@ -7,31 +7,26 @@
 <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-
 :root{
   --pink:#ff69b4; --deep-pink:#ff1493; --purple:#c471f5;
   --blue:#4facfe; --cyan:#00c6fb; --orange:#ffa940;
   --green:#3bd16f; --cream:#fff8ee; --label:#d63384;
 }
-
 html,body{
   width:100%;height:100%;
   font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
   background:transparent; overflow:hidden;
 }
-
 #mapOverlay{
   position:absolute; inset:0; background:transparent;
   display:none; z-index:5000; animation:fadeIn .25s ease;
 }
 #mapOverlay.show{display:block}
 @keyframes fadeIn{from{opacity:0}to{opacity:1}}
-
 #mapCard{
   width:100%; height:100%; background:var(--cream);
   display:flex; flex-direction:column; overflow:hidden; position:relative;
 }
-
 #mapTopbar{
   flex-shrink:0;
   background:linear-gradient(135deg,#ff9a9e 0%,#fad0c4 25%,#ffd1ff 50%,#c471f5 75%,#4facfe 100%);
@@ -72,10 +67,8 @@ html,body{
   white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
   text-shadow:0 1px 2px rgba(0,0,0,.15);
 }
-
 #mapContainer{flex:1;min-height:0;position:relative}
 #mapEl{width:100%;height:100%}
-
 #mapLoading{
   position:absolute; inset:0;
   display:flex; flex-direction:column; align-items:center; justify-content:center;
@@ -101,7 +94,6 @@ html,body{
   animation:topbarFlow 3s ease infinite;
   font-family:'Fredoka One',cursive; letter-spacing:1px;
 }
-
 #mapCard::after{
   content:""; position:absolute; bottom:0; left:0; right:0; height:4px;
   background:linear-gradient(90deg,#ff69b4,#c471f5,#4facfe,#3bd16f,#ffa940,#ff69b4);
@@ -109,7 +101,6 @@ html,body{
   animation:topbarFlow 4s linear infinite;
   z-index:20; pointer-events:none;
 }
-
 #locTip{
   position:absolute; left:50%; bottom:14px;
   transform:translateX(-50%);
@@ -125,6 +116,18 @@ html,body{
   border:none; color:#fff; font-size:12px;
   padding:4px 12px; border-radius:12px; cursor:pointer;
   font-weight:600; flex-shrink:0;
+}
+
+/* ===== 全局 marker 动画（不要在 content 里重复注入） ===== */
+@keyframes markerFlow{
+  0%{background-position:0% 50%}
+  50%{background-position:100% 50%}
+  100%{background-position:0% 50%}
+}
+@keyframes markerFlow2{
+  0%{background-position:0% 50%}
+  50%{background-position:100% 50%}
+  100%{background-position:0% 50%}
 }
 </style>
 </head>
@@ -167,6 +170,9 @@ let _mapObj       = null;
 let _myMarker     = null;
 let _targetMarker = null;
 
+/* 记录所有仍在图上的 marker，重建前统一清空 */
+const _allMarkers = new Set();
+
 let _targetLng    = 0;
 let _targetLat    = 0;
 let _targetName   = '帖子位置';
@@ -177,6 +183,26 @@ let _myAvatar     = '';
 
 let _parentMyLng  = null;
 let _parentMyLat  = null;
+
+/* 定位请求序号：只有最新一次的回调才允许落地标记 */
+let _locateSeq    = 0;
+
+function _clearMarker(marker) {
+  if (!marker) return;
+  try { marker.setMap(null); } catch (e) {}
+  try { if (_mapObj && _mapObj.remove) _mapObj.remove(marker); } catch (e) {}
+  _allMarkers.delete(marker);
+}
+
+function _clearAllMarkers() {
+  _allMarkers.forEach(m => {
+    try { m.setMap(null); } catch (e) {}
+    try { if (_mapObj && _mapObj.remove) _mapObj.remove(m); } catch (e) {}
+  });
+  _allMarkers.clear();
+  _myMarker = null;
+  _targetMarker = null;
+}
 
 window.openLoveMap = function(opts) {
   _targetLng    = parseFloat(opts.lng)    || 0;
@@ -199,6 +225,8 @@ window.openLoveMap = function(opts) {
   if (!_mapInited) {
     _loadAmapSDK(() => _initMap());
   } else {
+    _locateSeq++;              // 作废飞行中的旧定位
+    _clearAllMarkers();        // 清空所有旧标记
     _refreshMap();
   }
 };
@@ -210,6 +238,7 @@ window.addEventListener('message', function (e) {
 });
 
 window.closeLoveMap = function() {
+  _locateSeq++;
   document.getElementById('mapOverlay').classList.remove('show');
   try {
     if (window.parent && window.parent !== window) {
@@ -256,8 +285,8 @@ function _initMap() {
 
 function _refreshMap() {
   document.getElementById('mapLoading').style.display = 'none';
-  if (_targetMarker) _targetMarker.setPosition([_targetLng, _targetLat]);
-  else                _placeTargetMarker();
+
+  _placeTargetMarker();
   _mapObj.setCenter([_targetLng, _targetLat]);
 
   if (_parentMyLng != null && _parentMyLat != null) {
@@ -275,7 +304,13 @@ window.retryLocate = function() {
 
 /* ================= 作者标记 ================= */
 function _placeTargetMarker() {
-  if (_targetMarker) _targetMarker.setMap(null);
+  if (_targetMarker) {
+    _clearMarker(_targetMarker);
+    _targetMarker = null;
+  }
+
+  const nameSafe   = _escHtml(_authorName);
+  const avatarSafe = _attrEsc(_authorAvatar || './c.jpg');
 
   const content = `
     <div style="
@@ -291,7 +326,7 @@ function _placeTargetMarker() {
         padding:5px 12px;border-radius:14px;white-space:nowrap;
         box-shadow:0 3px 10px rgba(196,113,245,.45);
         border:1.5px solid rgba(255,255,255,.7);
-      ">${_escHtml(_authorName)}</div>
+      ">${nameSafe}</div>
       <div style="
         width:42px;height:42px;border-radius:50%;
         padding:2px;
@@ -301,8 +336,8 @@ function _placeTargetMarker() {
         margin-top:4px;
         box-shadow:0 3px 10px rgba(196,113,245,.4);
       ">
-        <img src="${_escHtml(_authorAvatar || './c.jpg')}"
-          onerror="this.src='./c.jpg'"
+        <img src="${avatarSafe}"
+          onerror="this.onerror=null;this.src='./c.jpg'"
           style="width:100%;height:100%;border-radius:50%;
                  object-fit:cover;background:#fdf2f8;
                  border:2px solid #fff;">
@@ -314,12 +349,7 @@ function _placeTargetMarker() {
         margin-top:-1px;
         filter:drop-shadow(0 2px 3px rgba(196,113,245,.4));
       "></div>
-    </div>
-    <style>@keyframes markerFlow{
-      0%{background-position:0% 50%}
-      50%{background-position:100% 50%}
-      100%{background-position:0% 50%}
-    }</style>`;
+    </div>`;
 
   _targetMarker = new AMap.Marker({
     position: [_targetLng, _targetLat],
@@ -329,6 +359,7 @@ function _placeTargetMarker() {
     zooms: [1, 20],
   });
   _mapObj.add(_targetMarker);
+  _allMarkers.add(_targetMarker);
 }
 
 /* ================= 自行定位 ================= */
@@ -337,6 +368,8 @@ function _locateMe() {
     showLocTip('当前浏览器不支持定位');
     return;
   }
+
+  const seq = ++_locateSeq;
 
   if (location.protocol !== 'https:' &&
       location.hostname !== 'localhost' &&
@@ -348,11 +381,13 @@ function _locateMe() {
 
   navigator.geolocation.getCurrentPosition(
     pos => {
+      if (seq !== _locateSeq) return;
       hideLocTip();
       _placeMyMarker(pos.coords.longitude, pos.coords.latitude);
       _fitBounds();
     },
     err => {
+      if (seq !== _locateSeq) return;
       console.warn('定位失败:', err.message || err.code);
       let msg = '定位失败';
       if (err.code === 1) msg = '定位权限被拒绝，请允许后再试';
@@ -367,7 +402,13 @@ function _locateMe() {
 
 /* ================= 我的位置标记 ================= */
 function _placeMyMarker(lng, lat) {
-  if (_myMarker) { _myMarker.setPosition([lng, lat]); return; }
+  if (_myMarker) {
+    _clearMarker(_myMarker);
+    _myMarker = null;
+  }
+
+  const nameSafe   = _escHtml(_myName);
+  const avatarSafe = _attrEsc(_myAvatar || './c.jpg');
 
   const content = `
     <div style="
@@ -383,7 +424,7 @@ function _placeMyMarker(lng, lat) {
         padding:5px 12px;border-radius:14px;white-space:nowrap;
         box-shadow:0 3px 10px rgba(79,172,254,.45);
         border:1.5px solid rgba(255,255,255,.7);
-      ">${_escHtml(_myName)}</div>
+      ">${nameSafe}</div>
       <div style="
         width:42px;height:42px;border-radius:50%;
         padding:2px;
@@ -393,8 +434,8 @@ function _placeMyMarker(lng, lat) {
         margin-top:4px;
         box-shadow:0 3px 10px rgba(79,172,254,.4);
       ">
-        <img src="${_escHtml(_myAvatar || './c.jpg')}"
-          onerror="this.src='./c.jpg'"
+        <img src="${avatarSafe}"
+          onerror="this.onerror=null;this.src='./c.jpg'"
           style="width:100%;height:100%;border-radius:50%;
                  object-fit:cover;background:#e8f4fb;
                  border:2px solid #fff;">
@@ -406,12 +447,7 @@ function _placeMyMarker(lng, lat) {
         margin-top:-1px;
         filter:drop-shadow(0 2px 3px rgba(79,172,254,.4));
       "></div>
-    </div>
-    <style>@keyframes markerFlow2{
-      0%{background-position:0% 50%}
-      50%{background-position:100% 50%}
-      100%{background-position:0% 50%}
-    }</style>`;
+    </div>`;
 
   _myMarker = new AMap.Marker({
     position: [lng, lat],
@@ -421,6 +457,7 @@ function _placeMyMarker(lng, lat) {
     zooms: [1, 20],
   });
   _mapObj.add(_myMarker);
+  _allMarkers.add(_myMarker);
 }
 
 function _fitBounds() {
@@ -448,6 +485,9 @@ function _escHtml(str) {
   const d = document.createElement('div');
   d.textContent = str || '';
   return d.innerHTML;
+}
+function _attrEsc(str) {
+  return String(str || '').replace(/"/g, '&quot;');
 }
 </script>
 </body>
