@@ -2385,14 +2385,16 @@ function renderStickerGrid() {
         return;
     }
     grid.innerHTML = '';
+
     stickerCache.forEach(s => {
         const item = document.createElement('div');
         item.className = 'sticker-grid-item';
+        item.style.position = 'relative';
 
-        const inner = document.createElement('div');
-        inner.className = 'sticker-grid-item-inner';
-        inner.style.position = 'relative';
-        inner.innerHTML = `<img data-cache-src="${API_BASE}${s.url}" loading="lazy">`;
+        const img = document.createElement('img');
+        img.src = `${API_BASE}${s.url}`;
+        img.loading = 'lazy';
+        item.appendChild(img);
 
         if (stickerManageMode) {
             const delBtn = document.createElement('div');
@@ -2409,41 +2411,35 @@ function renderStickerGrid() {
             delBtn.textContent = '×';
             delBtn.addEventListener('click', (e) => {
                 e.stopPropagation();
-                if (confirm('删除这个表情包吗？')) {
-                    deleteSticker(s.id, item);
-                }
+                if (confirm('删除这个表情包吗？')) deleteSticker(s.id, item);
             });
-            inner.style.border = '2px solid #ffb6c1';
-            inner.appendChild(delBtn);
-            inner.addEventListener('click', () => {
-                if (confirm('删除这个表情包吗？')) {
-                    deleteSticker(s.id, item);
-                }
+            item.appendChild(delBtn);
+
+            item.addEventListener('click', () => {
+                if (confirm('删除这个表情包吗？')) deleteSticker(s.id, item);
             });
+            item.style.border = '2px solid #ffb6c1';
         } else {
-            inner.addEventListener('click', () => selectSticker(s.url));
+            item.addEventListener('click', () => selectSticker(s.url));
 
             let pressTimer = null;
             const startPress = () => {
                 pressTimer = setTimeout(() => {
                     pressTimer = null;
-                    if (confirm('删除这个表情包吗？')) {
-                        deleteSticker(s.id, item);
-                    }
+                    if (confirm('删除这个表情包吗？')) deleteSticker(s.id, item);
                 }, 600);
             };
             const cancelPress = () => {
                 if (pressTimer) { clearTimeout(pressTimer); pressTimer = null; }
             };
-            inner.addEventListener('mousedown', startPress);
-            inner.addEventListener('touchstart', startPress, { passive: true });
-            inner.addEventListener('mouseup', cancelPress);
-            inner.addEventListener('mouseleave', cancelPress);
-            inner.addEventListener('touchend', cancelPress);
-            inner.addEventListener('touchcancel', cancelPress);
+            item.addEventListener('mousedown', startPress);
+            item.addEventListener('touchstart', startPress, { passive: true });
+            item.addEventListener('mouseup', cancelPress);
+            item.addEventListener('mouseleave', cancelPress);
+            item.addEventListener('touchend', cancelPress);
+            item.addEventListener('touchcancel', cancelPress);
         }
 
-        item.appendChild(inner);
         grid.appendChild(item);
     });
 }
