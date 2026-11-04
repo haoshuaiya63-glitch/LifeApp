@@ -5,6 +5,8 @@
      LocalCache.readJSON / writeJSON / readText / writeText
      LocalCache.trimImages(maxBytes)   清理最旧的图片缓存
      LocalCache.clearAll()             清空全部缓存
+     LocalCache.prefetchImages(urls)   批量预下载图片
+     LocalCache.syncStickers(api, id)  下载自己全部表情包
      cacheImage(url)                   返回本地 URL（未缓存则下载并保存）
      setCachedSrc(imgEl, url)          给单个 <img> 设置缓存图
      applyCachedImages(root)           处理 root 下所有 img[data-cache-src]
@@ -215,7 +217,8 @@
         if (!rootDir) return;
         let dir;
         try { dir = await getDir(BASE + IMG_DIR, false); } catch (e) { return; }
-        const entries = (await readAllEntries(dir)).filter(e => e.isFile);
+        const entries = (await readAllEntries(dir))
+            .filter(e => e.isFile && !e.name.endsWith('.tmp'));
         const infos = (await Promise.all(entries.map(e => new Promise(res => {
             e.file(f => res({ e, size: f.size, t: f.lastModified }), () => res(null));
         })))).filter(Boolean);
@@ -322,9 +325,66 @@
         });
     }
 
+    /* =====================================================
+       批量预下载 / 表情包同步
+       ===================================================== */
+    async function localFileExists(rel) {
+        try {
+            const entry = await getFileEntry(BASE + rel, false);
+            return await new Promise(res => entry.file(f => res(f.size > 0), () => res(false)));
+        } catch (e) {
+            return false;
+        }
+    }
+
+    // 并发下载一批图片，已存在的跳过
+    async function prefetchImages(urls, concurrency) {
+        concurrency = concurrency || 3;
+        const list = [...new Set((urls || []).filter(u => /^https?:\/\//i.test(u)))];
+        const stat = { total: list.length, downloaded: 0, skipped: 0, failed: 0 };
+        await ready;
+        if (!rootDir || !list.length) return stat;
+
+        let i = 0;
+        const worker = async () => {
+            while (i < list.length) {
+                const url = list[i++];
+                try {
+                    if (await localFileExists(imgPath(url))) { stat.skipped++; continue; }
+                    const u = await cacheImage(url);
+                    if (u === url) stat.failed++; else stat.downloaded++;
+                } catch (e) {
+                    stat.failed++;
+                }
+            }
+        };
+        await Promise.all(Array.from({ length: concurrency }, worker));
+        return stat;
+    }
+
+    // 同步"我的全部表情包"：写列表 JSON + 下载所有图片
+    async function syncStickers(apiBase, deviceId) {
+        try {
+            const res = await fetch(`${apiBase}/stickers/${encodeURIComponent(deviceId)}`);
+            const result = await res.json();
+            if (!result.success || !Array.isArray(result.data)) return null;
+
+            const list = result.data;
+            const urls = list.map(s => /^https?:\/\//i.test(s.url) ? s.url : apiBase + s.url);
+
+            await writeJSON(`stickers_${deviceId}.json`, list);   // 与 app.js 的缓存 key 一致
+            return await prefetchImages(urls, 3);
+        } catch (e) {
+            console.warn('同步表情包失败', e);
+            return null;
+        }
+    }
+
     global.cacheImage = cacheImage;
     global.setCachedSrc = setCachedSrc;
     global.applyCachedImages = applyCachedImages;
+    global.LocalCache.prefetchImages = prefetchImages;
+    global.LocalCache.syncStickers = syncStickers;
 
     /* 自动监听：任何新插入的 img[data-cache-src] 都会被处理，不需要手动调用 */
     function startObserver() {
