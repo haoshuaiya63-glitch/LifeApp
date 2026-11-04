@@ -1196,17 +1196,7 @@ body {
     color: #d63384;
 }
 
-.sticker-pick-btn {
-    background: #fdf2f8;
-    border: 2px solid #ffb6c1;
-    border-radius: 12px;
-    font-size: 20px;
-    width: 48px;
-    cursor: pointer;
-}
-
-
-     /* ===== 表情包相关 ===== */
+  /* ===== 表情包相关 ===== */
 .sticker-pick-btn {
     background: #fdf2f8;
     border: 2px solid #ffb6c1;
@@ -1233,10 +1223,10 @@ body {
     padding: 20px;
     width: 85%;
     max-width: 340px;
-    height: min(520px, 72vh);  /* 改成固定高度，而不是 max-height */
+    height: min(520px, 72vh);
     display: flex;
     flex-direction: column;
-    overflow: hidden;          /* 内容超出时不再撑破弹窗 */
+    overflow: hidden;
 }
 .sticker-modal-header {
     display: flex;
@@ -1266,6 +1256,8 @@ body {
 .sticker-grid::-webkit-scrollbar { width: 6px; }
 .sticker-grid::-webkit-scrollbar-thumb { background: #ffb6c1; border-radius: 6px; }
 .sticker-grid::-webkit-scrollbar-track { background: transparent; }
+
+/* ===== 表情包网格（扁平版，与旧版一致） ===== */
 .sticker-grid-item {
     width: 100%;
     aspect-ratio: 1/1;
@@ -1275,9 +1267,24 @@ body {
     overflow: visible;
     position: relative;
     z-index: 0;
+    cursor: pointer;
+    border-radius: 10px;
+    background: #fdf2f8;
+    border: 1px solid #ffe0ec;
+    transition: transform 0.15s ease;
 }
-.sticker-grid-item img { width: 100%; height: 100%; object-fit: cover; }
-.sticker-grid-item:hover { transform: scale(1.06); }
+.sticker-grid-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 10px;
+    display: block;
+}
+.sticker-grid-item:hover {
+    transform: scale(1.06);
+    z-index: 10;
+}
+
 .sticker-grid-empty {
     grid-column: 1 / -1;
     text-align: center;
@@ -1320,7 +1327,6 @@ body {
     cursor: pointer;
     font-size: 14px;
 }
-
 
 .comment-sticker-wrap {
     position: relative;
@@ -2218,7 +2224,7 @@ body {
     <div class="music-bar-progress" id="musicProgress"></div>
 </div>
 
-<!-- ===== 地图 iframe 覆盖层（新增） ===== -->
+<!-- ===== 地图 iframe 覆盖层 ===== -->
 <div id="mapFrameWrap">
   <iframe id="mapFrame" src="./map.html"
     allow="geolocation"></iframe>
