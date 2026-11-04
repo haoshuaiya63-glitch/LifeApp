@@ -36,6 +36,9 @@
     <preference name="AndroidPostSplashScreenTheme" value="@style/Theme.AppCompat.NoActionBar" />
 
     <platform name="android">
+        <!-- ========== 桌面图标 ========== -->
+        <icon src="icon.png" />
+
         <!-- 允许明文 HTTP（后端不是 https，不加会被系统拦截） -->
         <edit-config file="app/src/main/AndroidManifest.xml" mode="merge" target="/manifest/application">
             <application android:usesCleartextTraffic="true" />
