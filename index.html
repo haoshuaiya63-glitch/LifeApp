@@ -6,218 +6,202 @@
   <title>Happy🙂</title>
  <style>
     * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-    }
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 
- body {
+body {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     min-height: 100vh;
     color: #333;
     position: relative;
     overflow-x: hidden;
 }
-    .container {
-        max-width: 390px;
-        margin: 0 auto;
-        background: transparent; /* 改为透明，让背景透出 */
-        min-height: 100vh;
-        position: relative;
-    }
 
-    /* ========== 登录页面（全新美化版） ========== */
-    .login-page {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
-        padding: 20px;
-        position: relative;
-        z-index: 2;
-    }
-
-    /* 时间显示 - 顶部居中 */
-    .time-display {
-        position: fixed;
-        top: 20px;
-        left: 50%;
-        transform: translateX(-50%);
-        font-size: 16px;
-        color: white;
-        text-shadow: 0 2px 4px rgba(0,0,0,0.3);
-        z-index: 10;
-        background: rgba(255, 255, 255, 0.2);
-        backdrop-filter: blur(5px);
-        -webkit-backdrop-filter: blur(5px);
-        padding: 6px 16px;
-        border-radius: 20px;
-        letter-spacing: 1px;
-    }
-
-    /* 登录卡片：毛玻璃 + 半透明 */
-    .login-card {
-  background-size: cover;             /* 全图铺满卡片 */
-  background-position: center;         /* 居中 */
-  background-repeat: no-repeat;         /* 不重复 */
-  border-radius: 24px;
-  box-shadow: none;
-
-  padding: 36px 28px;
-  width: 90%;
-  max-width: 320px;
-  text-align: center;
+.container {
+    max-width: 390px;
+    margin: 0 auto;
+    background: transparent;
+    min-height: 100vh;
+    position: relative;
 }
-.login-card{
-    font-family:'Fredoka One',cursive;
+
+.login-page {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    padding: 20px;
+    position: relative;
+    z-index: 2;
 }
-    .login-card::before {
-        content: "";
-        position: absolute;
-        top: -50%;
-        left: -50%;
-        width: 200%;
-        height: 200%;
-        background: radial-gradient(circle, rgba(255,105,180,0.15) 0%, transparent 70%);
-        border-radius: 50%;
-        z-index: -1;
-    }
+
+.time-display {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 16px;
+    color: white;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    z-index: 10;
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    padding: 6px 16px;
+    border-radius: 20px;
+    letter-spacing: 1px;
+}
+
+.login-card {
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 24px;
+    box-shadow: none;
+    padding: 36px 28px;
+    width: 90%;
+    max-width: 320px;
+    text-align: center;
+    font-family: 'Fredoka One', cursive;
+}
+
+.login-card::before {
+    content: "";
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255,105,180,0.15) 0%, transparent 70%);
+    border-radius: 50%;
+    z-index: -1;
+}
 
 .welcome-icon {
     font-size: 64px;
     margin-bottom: 16px;
     color: #A8D8EA;
     text-shadow: 0 2px 6px rgba(168, 216, 234, 0.4);
-
-    font-family: 'Fredoka One', cursive; /* 与标题一致 */
-
+    font-family: 'Fredoka One', cursive;
     animation: loveFloat 3s ease-in-out infinite;
     display: inline-block;
 }
+
 @keyframes loveFloat {
-    0% {
-        transform: translateY(0px) scale(1);
-    }
-
-    25% {
-        transform: translateY(-8px) scale(1.03);
-    }
-
-    50% {
-        transform: translateY(-15px) scale(1.06);
-    }
-
-    75% {
-        transform: translateY(-8px) scale(1.03);
-    }
-
-    90% {
-        transform: translateY(0px) scale(1);
-    }
+    0% { transform: translateY(0px) scale(1); }
+    25% { transform: translateY(-8px) scale(1.03); }
+    50% { transform: translateY(-15px) scale(1.06); }
+    75% { transform: translateY(-8px) scale(1.03); }
+    90% { transform: translateY(0px) scale(1); }
 }
-   .login-title {
+
+.login-title {
     font-size: 28px;
-   color: #A8D8EA;
+    color: #A8D8EA;
     margin-bottom: 8px;
     font-weight: 400;
     letter-spacing: 2px;
     font-family: 'Fredoka One', cursive;
 }
-   .love-days-count {
-    color: #87CEFA; /* 浅蓝色 */
+
+.love-days-count {
+    color: #87CEFA;
 }
-    .login-input {
-        width: 100%;
-        padding: 14px 18px;
-        border: 2px solid rgba(255, 182, 193, 0.5);
-        border-radius: 16px;
-        font-size: 16px;
-        transition: all 0.4s ease;
-        background: rgba(255, 255, 255, 0.6);
-        margin-bottom: 20px;
-        color: #333;
-    }
 
-    .login-input:focus {
-        outline: none;
-        border-color: #ff69b4;
-        background: white;
-        box-shadow: 0 0 0 3px rgba(255, 105, 180, 0.2);
-        transform: translateY(-2px);
-    }
+.login-input {
+    width: 100%;
+    padding: 14px 18px;
+    border: 2px solid rgba(255, 182, 193, 0.5);
+    border-radius: 16px;
+    font-size: 16px;
+    transition: all 0.4s ease;
+    background: rgba(255, 255, 255, 0.6);
+    margin-bottom: 20px;
+    color: #333;
+}
 
-    .login-btn {
-        width: 100%;
-        padding: 14px;
-        background: linear-gradient(135deg, #ff69b4 0%, #ff1493 100%);
-        color: white;
-        border: none;
-        border-radius: 16px;
-        font-size: 18px;
-        font-weight: 600;
-        cursor: pointer;
-        transition: all 0.4s ease;
-        letter-spacing: 1px;
-        position: relative;
-        overflow: hidden;
-    }
+.login-input:focus {
+    outline: none;
+    border-color: #ff69b4;
+    background: white;
+    box-shadow: 0 0 0 3px rgba(255, 105, 180, 0.2);
+    transform: translateY(-2px);
+}
 
-    .login-btn::after {
-        content: "";
-        position: absolute;
-        top: 0; left: -100%;
-        width: 100%; height: 100%;
-        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
-        transition: 0.5s;
-    }
+.login-btn {
+    width: 100%;
+    padding: 14px;
+    background: linear-gradient(135deg, #ff69b4 0%, #ff1493 100%);
+    color: white;
+    border: none;
+    border-radius: 16px;
+    font-size: 18px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.4s ease;
+    letter-spacing: 1px;
+    position: relative;
+    overflow: hidden;
+}
 
-    .login-btn:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 8px 25px rgba(255, 105, 180, 0.5);
-    }
+.login-btn::after {
+    content: "";
+    position: absolute;
+    top: 0; left: -100%;
+    width: 100%; height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+    transition: 0.5s;
+}
 
-    .login-btn:hover::after {
-        left: 100%;
-    }
+.login-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(255, 105, 180, 0.5);
+}
 
-    .error-msg {
-        color: #dc3545;
-        font-size: 14px;
-        margin-top: 12px;
-        display: none;
-        animation: pulse 0.6s;
-    }
+.login-btn:hover::after {
+    left: 100%;
+}
 
-    @keyframes pulse {
-        0% { opacity: 0.7; transform: scale(0.95); }
-        50% { opacity: 1; transform: scale(1.02); }
-        100% { opacity: 0.7; transform: scale(0.95); }
-    }
+.error-msg {
+    color: #dc3545;
+    font-size: 14px;
+    margin-top: 12px;
+    display: none;
+    animation: pulse 0.6s;
+}
 
-    /* ========== 主页面 ========== */
-    .main-page {
-        display: none;
-        min-height: 100vh;
-    }
+@keyframes pulse {
+    0% { opacity: 0.7; transform: scale(0.95); }
+    50% { opacity: 1; transform: scale(1.02); }
+    100% { opacity: 0.7; transform: scale(0.95); }
+}
 
-    .header {
+.main-page {
+    display: none;
+    min-height: 100vh;
+}
+
+.header {
     background: url('./bj1.jpg') center center/cover no-repeat;
     position: relative;
     z-index: 5;
 }
-    .header-title {
-        font-size: 20px;
-        font-weight: 600;
-        margin-bottom: 5px;
-    }
 
-    .header-subtitle {
-        font-size: 14px;
-        opacity: 0.9;
-    }
+.header-title {
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 5px;
+}
 
-    .upload-btn {
+.header-subtitle {
+    font-size: 14px;
+    opacity: 0.9;
+}
+
+.upload-btn {
     position: absolute;
     right: 20px;
     top: 50%;
@@ -259,7 +243,6 @@
         inset 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
-/* 呼吸光晕，提示可点击 */
 .upload-btn::after {
     content: "";
     position: absolute;
@@ -271,10 +254,11 @@
 }
 
 @keyframes uploadBtnPulse {
-    0%   { transform: scale(1);   opacity: 0.7; }
-    70%  { transform: scale(1.35); opacity: 0; }
+    0% { transform: scale(1); opacity: 0.7; }
+    70% { transform: scale(1.35); opacity: 0; }
     100% { transform: scale(1.35); opacity: 0; }
 }
+
 .media-item.has-unread {
     animation: unreadCardFloat 0.9s ease-in-out infinite;
     position: relative;
@@ -292,18 +276,19 @@
                     0 0 0 10px rgba(255, 59, 48, 0);
     }
 }
-    .content {
-        padding: 20px;
-    }
 
-    .media-grid {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        gap: 15px;
-        margin-bottom: 30px;
-    }
+.content {
+    padding: 20px;
+}
 
-    .media-item {
+.media-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+    margin-bottom: 30px;
+}
+
+.media-item {
     background: white;
     background-image: url('./tg.jpg');
     background-repeat: no-repeat;
@@ -315,85 +300,86 @@
     cursor: pointer;
     position: relative;
 }
-    .media-item:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 10px 25px rgba(255, 182, 193, 0.3);
-    }
 
-    .media-preview {
-        width: 100%;
-        height: auto;
-        min-height: 120px;
-        max-height: 150px;
-        object-fit: contain;
-        background: #fdf2f8;
-        display: block;
-    }
+.media-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(255, 182, 193, 0.3);
+}
 
-    .media-info {
+.media-preview {
+    width: 100%;
+    height: auto;
+    min-height: 120px;
+    max-height: 150px;
+    object-fit: contain;
+    background: #fdf2f8;
+    display: block;
+}
+
+.media-info {
     padding: 12px;
     position: relative;
     background: rgba(255, 255, 255, 0.85);
 }
 
-    .media-description {
-        font-size: 13px;
-        color: #666;
-        line-height: 1.4;
-        margin-bottom: 8px;
-        display: -webkit-box;
-        -webkit-line-clamp: 2;
-        -webkit-box-orient: vertical;
-        overflow: hidden;
-    }
+.media-description {
+    font-size: 13px;
+    color: #666;
+    line-height: 1.4;
+    margin-bottom: 8px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
 
-    .media-date {
-        font-size: 11px;
-        color: #999;
-    }
+.media-date {
+    font-size: 11px;
+    color: #999;
+}
 
-    .pagination {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        gap: 10px;
-        margin-top: 20px;
-    }
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin-top: 20px;
+}
 
-    .page-btn {
-        padding: 8px 12px;
-        border: 1px solid #f8d7da;
-        background: white;
-        border-radius: 8px;
-        cursor: pointer;
-        font-size: 14px;
-        transition: all 0.3s ease;
-    }
+.page-btn {
+    padding: 8px 12px;
+    border: 1px solid #f8d7da;
+    background: white;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.3s ease;
+}
 
-    .page-btn:hover, .page-btn.active {
-        background: #ff69b4;
-        color: white;
-        border-color: #ff69b4;
-    }
+.page-btn:hover, .page-btn.active {
+    background: #ff69b4;
+    color: white;
+    border-color: #ff69b4;
+}
 
-    .page-btn:disabled {
-        opacity: 0.5;
-        cursor: not-allowed;
-    }
+.page-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
 
-    /* ========== 上传模态框 ========== */
-    .upload-modal {
-        display: none;
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: rgba(0,0,0,0.5);
-        z-index: 1000;
-    }
+/* ===== 上传弹窗 ===== */
+.upload-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,0.5);
+    z-index: 1000;
+}
 
-    .modal-content {
+.modal-content {
     position: absolute;
     top: 50%;
     left: 50%;
@@ -410,6 +396,7 @@
     max-height: 80vh;
     overflow-y: auto;
 }
+
 .modal-content::before {
     content: "";
     position: absolute;
@@ -419,10 +406,12 @@
     pointer-events: none;
     z-index: 0;
 }
+
 .modal-content > * {
     position: relative;
     z-index: 1;
 }
+
 .upload-progress-overlay {
     display: none;
     position: absolute;
@@ -435,7 +424,9 @@
     gap: 14px;
     z-index: 50;
 }
+
 .upload-progress-overlay.show { display: flex; }
+
 .upload-spinner {
     width: 40px; height: 40px;
     border: 4px solid #ffd9e6;
@@ -443,127 +434,133 @@
     border-radius: 50%;
     animation: upload-spin 0.8s linear infinite;
 }
+
 @keyframes upload-spin { to { transform: rotate(360deg); } }
+
 .upload-progress-percent {
     font-size: 22px;
     font-weight: 700;
     color: #d63384;
     font-family: 'Fredoka One', cursive;
 }
+
 .upload-progress-label { font-size: 13px; color: #999; }
+
 .upload-progress-track {
     width: 80%; height: 8px;
     background: #ffe0ec;
     border-radius: 4px;
     overflow: hidden;
 }
+
 .upload-progress-fill {
     height: 100%; width: 0%;
     background: linear-gradient(90deg, #ff69b4, #ff1493);
     transition: width 0.15s ease;
 }
-    .modal-header {
-        text-align: center;
-        margin-bottom: 20px;
-    }
 
-    .modal-title {
-        font-size: 18px;
-        font-weight: 600;
-        color: #d63384;
-    }
+.modal-header {
+    text-align: center;
+    margin-bottom: 20px;
+}
 
-    .file-input-wrapper {
-        position: relative;
-        margin-bottom: 20px;
-    }
+.modal-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: #d63384;
+}
 
-    .file-input {
-        display: none;
-    }
+.file-input-wrapper {
+    position: relative;
+    margin-bottom: 20px;
+}
 
-    .file-input-btn {
-        width: 100%;
-        padding: 40px 20px;
-        border: 2px dashed #ffb6c1;
-        border-radius: 12px;
-        text-align: center;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        background: #fdf2f8;
-    }
+.file-input {
+    display: none;
+}
 
-    .file-input-btn:hover {
-        border-color: #ff69b4;
-        background: #f8e6f0;
-    }
+.file-input-btn {
+    width: 100%;
+    padding: 40px 20px;
+    border: 2px dashed #ffb6c1;
+    border-radius: 12px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background: #fdf2f8;
+}
 
-    .file-preview {
-        width: 100%;
-        max-height: 200px;
-        object-fit: cover;
-        border-radius: 8px;
-        margin-bottom: 15px;
-    }
+.file-input-btn:hover {
+    border-color: #ff69b4;
+    background: #f8e6f0;
+}
 
-    .description-input {
-        width: 100%;
-        padding: 12px;
-        border: 1px solid #f8d7da;
-        border-radius: 8px;
-        font-size: 14px;
-        resize: vertical;
-        min-height: 80px;
-        margin-bottom: 20px;
-        background: #fdf2f8;
-    }
+.file-preview {
+    width: 100%;
+    max-height: 200px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-bottom: 15px;
+}
 
-    .description-input:focus {
-        outline: none;
-        border-color: #ff69b4;
-        background: white;
-    }
+.description-input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #f8d7da;
+    border-radius: 8px;
+    font-size: 14px;
+    resize: vertical;
+    min-height: 80px;
+    margin-bottom: 20px;
+    background: #fdf2f8;
+}
 
-    .modal-buttons {
-        display: flex;
-        gap: 10px;
-    }
+.description-input:focus {
+    outline: none;
+    border-color: #ff69b4;
+    background: white;
+}
 
-    .modal-btn {
-        flex: 1;
-        padding: 12px;
-        border: none;
-        border-radius: 8px;
-        font-size: 14px;
-        font-weight: 600;
-        cursor: pointer;
-        transition: all 0.3s ease;
-    }
+.modal-buttons {
+    display: flex;
+    gap: 10px;
+}
 
-    .cancel-btn {
-        background: #f8f9fa;
-        color: #666;
-    }
+.modal-btn {
+    flex: 1;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
 
-    .submit-btn {
-        background: linear-gradient(135deg, #ff69b4 0%, #ff1493 100%);
-        color: white;
-    }
+.cancel-btn {
+    background: #f8f9fa;
+    color: #666;
+}
 
-    /* ========== 详情页面 ========== */
-    .detail-page {
-        display: none;
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: white;
-        z-index: 2000;
-        overflow-y: auto;
-    }
+.submit-btn {
+    background: linear-gradient(135deg, #ff69b4 0%, #ff1493 100%);
+    color: white;
+}
 
- .detail-header {
+/* ===== 详情页 ===== */
+.detail-page {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: white;
+    z-index: 2000;
+    overflow-y: auto;
+}
+
+.detail-header {
     background: url('./bj1.jpg') center/100% auto no-repeat, #ffb6c1;
     min-height: 180px;
     color: white;
@@ -572,29 +569,29 @@
     align-items: center;
 }
 
-    .back-btn {
-        background: none;
-        border: none;
-        color: white;
-        font-size: 20px;
-        cursor: pointer;
-        margin-right: 15px;
-    }
+.back-btn {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+    margin-right: 15px;
+}
 
-    .detail-media {
-        width: 100%;
-        max-height: 70vh;
-        object-fit: contain;
-        background: #f8f9fa;
-        cursor: pointer;
-        transition: transform 0.3s ease;
-    }
+.detail-media {
+    width: 100%;
+    max-height: 70vh;
+    object-fit: contain;
+    background: #f8f9fa;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
 
-    .detail-media:hover {
-        transform: scale(1.02);
-    }
+.detail-media:hover {
+    transform: scale(1.02);
+}
 
-   .detail-content {
+.detail-content {
     padding: 20px;
     position: relative;
     background-image: url('./tg.jpg');
@@ -603,6 +600,7 @@
     background-size: 100% auto;
     image-rendering: -webkit-optimize-contrast;
 }
+
 .detail-content::before {
     content: "";
     position: absolute;
@@ -611,121 +609,133 @@
     pointer-events: none;
     z-index: 0;
 }
+
 .detail-content > * {
     position: relative;
     z-index: 1;
 }
+
 #commentsList {
     transition: max-height 0.3s ease;
 }
+
 #commentsList.scroll-mode {
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
     padding-right: 4px;
 }
+
 #commentsList.scroll-mode::-webkit-scrollbar { width: 5px; }
 #commentsList.scroll-mode::-webkit-scrollbar-thumb { background: #ffb6c1; border-radius: 6px; }
-    .detail-description {
-        font-size: 16px;
-        line-height: 1.6;
-        color: #333;
-        margin-bottom: 20px;
-    }
 
-    .detail-date {
-        font-size: 14px;
-        color: #999;
-        margin-bottom: 30px;
-    }
+.detail-description {
+    font-size: 16px;
+    line-height: 1.6;
+    color: #333;
+    margin-bottom: 20px;
+}
 
-    .actions {
-        display: flex;
-        gap: 20px;
-        margin-bottom: 30px;
-        padding-bottom: 20px;
-        border-bottom: 1px solid #f8d7da;
-    }
+.detail-date {
+    font-size: 14px;
+    color: #999;
+    margin-bottom: 30px;
+}
 
-    .action-btn {
-        display: flex;
-        align-items: center;
-        gap: 5px;
-        background: none;
-        border: none;
-        color: #666;
-        font-size: 14px;
-        cursor: pointer;
-        transition: all 0.3s ease;
-    }
+.actions {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #f8d7da;
+}
 
-    .action-btn.liked {
-        color: #ff69b4;
-    }
+.action-btn {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    background: none;
+    border: none;
+    color: #666;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
 
-    .comments-section {
-        margin-top: 20px;
-    }
+.action-btn.liked {
+    color: #ff69b4;
+}
 
-    .comments-title {
-        font-size: 16px;
-        font-weight: 600;
-        margin-bottom: 15px;
-        color: #d63384;
-    }
+.comments-section {
+    margin-top: 20px;
+}
 
-    .comment-input {
-        width: 100%;
-        padding: 12px;
-        border: 1px solid #f8d7da;
-        border-radius: 12px;
-        font-size: 14px;
-        margin-bottom: 15px;
-        background: #fdf2f8;
-    }
+.comments-title {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 15px;
+    color: #d63384;
+}
 
-    .comment-input:focus {
-        outline: none;
-        border-color: #ff69b4;
-        background: white;
-    }
+.comment-input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #f8d7da;
+    border-radius: 12px;
+    font-size: 14px;
+    margin-bottom: 15px;
+    background: #fdf2f8;
+}
 
-    .comment-btn {
-        background: linear-gradient(135deg, #ff69b4 0%, #ff1493 100%);
-        color: white;
-        border: none;
-        padding: 10px 20px;
-        border-radius: 20px;
-        font-size: 14px;
-        cursor: pointer;
-    }
+.comment-input:focus {
+    outline: none;
+    border-color: #ff69b4;
+    background: white;
+}
 
-    .comment-item {
-        background: #fdf2f8;
-        padding: 12px;
-        border-radius: 8px;
-        margin-bottom: 10px;
-        border-left: 3px solid #ffb6c1;
-    }
+.comment-btn {
+    background: linear-gradient(135deg, #ff69b4 0%, #ff1493 100%);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 20px;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.comment-item {
+    background: #fdf2f8;
+    padding: 12px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    border-left: 3px solid #ffb6c1;
+}
+
 .comment-replies {
     margin-top: 10px;
     margin-left: 20px;
     padding-left: 12px;
     border-left: 2px solid #ffe0ec;
-}.comment-replies {
-    margin-top: 10px;
-    margin-left: 20px;
-    padding-left: 12px;
-    border-left: 2px solid #ffe0ec;
+    max-height: 2000px;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
 }
+
+.comment-replies.collapsed {
+    max-height: 0;
+    margin-top: 0;
+}
+
 .comment-reply-item {
     background: #fff;
     border-radius: 8px;
     padding: 10px 12px;
     margin-bottom: 8px;
 }
+
 .comment-reply-item:last-child {
     margin-bottom: 0;
 }
+
 .reply-indicator-bar {
     display: flex;
     align-items: center;
@@ -738,9 +748,11 @@
     font-size: 13px;
     color: #d63384;
 }
+
 .reply-indicator-bar b {
     color: #ff1493;
 }
+
 .reply-indicator-cancel {
     margin-left: auto;
     color: #999;
@@ -748,6 +760,7 @@
     font-size: 14px;
     padding: 2px 4px;
 }
+
 .comment-reply-btn {
     background: none;
     border: none;
@@ -757,222 +770,173 @@
     padding: 0 4px;
     transition: color 0.2s;
 }
+
 .comment-reply-btn:hover {
     color: #ff69b4;
 }
+
 .comment-reply-tag {
     color: #ff69b4;
     font-weight: 600;
     margin-right: 4px;
     font-size: 12px;
 }
-.comment-reply-item {
-    background: #fff;
-    border-radius: 8px;
-    padding: 10px 12px;
-    margin-bottom: 8px;
+
+.comment-text {
+    font-size: 14px;
+    color: #333;
+    margin-bottom: 5px;
 }
-.comment-reply-item:last-child {
-    margin-bottom: 0;
+
+.comment-date {
+    font-size: 12px;
+    color: #999;
 }
-.reply-indicator-bar {
+
+.video-thumbnail {
+    position: relative;
+}
+
+.play-icon {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(255, 105, 180, 0.8);
+    color: white;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
     display: flex;
     align-items: center;
-    gap: 8px;
-    background: #fdf2f8;
-    border: 1px solid #ffe0ec;
-    border-radius: 12px;
-    padding: 8px 12px;
-    margin-bottom: 10px;
-    font-size: 13px;
-    color: #d63384;
+    justify-content: center;
+    font-size: 16px;
 }
-.reply-indicator-bar b {
-    color: #ff1493;
+
+.loading {
+    text-align: center;
+    padding: 20px;
+    color: #ff69b4;
 }
-.reply-indicator-cancel {
-    margin-left: auto;
-    color: #999;
-    cursor: pointer;
-    font-size: 14px;
-    padding: 2px 4px;
+
+.error {
+    text-align: center;
+    padding: 20px;
+    color: #dc3545;
+    background: #f8d7da;
+    border-radius: 8px;
+    margin: 10px;
 }
-.comment-reply-btn {
-    background: none;
+
+.search-container {
+    margin-top: 15px;
+}
+
+.search-box {
+    display: flex;
+    align-items: center;
+    background: rgba(255,255,255,0.2);
+    border-radius: 25px;
+    padding: 5px;
+    gap: 5px;
+}
+
+.search-input {
+    flex: 1;
     border: none;
-    color: #ccc;
-    font-size: 12px;
+    background: transparent;
+    color: white;
+    padding: 10px 15px;
+    font-size: 14px;
+    border-radius: 20px;
+    outline: none;
+}
+
+.search-input::placeholder {
+    color: rgba(255,255,255,0.8);
+}
+
+.search-input:focus {
+    background: rgba(255,255,255,0.1);
+}
+
+.search-btn, .clear-search-btn {
+    background: rgba(255,255,255,0.3);
+    border: none;
+    color: white;
+    padding: 8px 12px;
+    border-radius: 20px;
+    font-size: 16px;
     cursor: pointer;
-    padding: 0 4px;
-    transition: color 0.2s;
+    transition: all 0.3s ease;
 }
-.comment-reply-btn:hover {
-    color: #ff69b4;
+
+.search-btn:hover, .clear-search-btn:hover {
+    background: rgba(255,255,255,0.4);
+    transform: scale(1.05);
 }
-.comment-reply-tag {
-    color: #ff69b4;
-    font-weight: 600;
-    margin-right: 4px;
-    font-size: 12px;
+
+.search-results-info {
+    text-align: center;
+    padding: 15px;
+    background: rgba(255, 105, 180, 0.1);
+    border-radius: 10px;
+    margin: 15px;
+    color: #d63384;
+    font-size: 14px;
 }
-    .comment-text {
-        font-size: 14px;
-        color: #333;
-        margin-bottom: 5px;
-    }
 
-    .comment-date {
-        font-size: 12px;
-        color: #999;
-    }
+.no-results {
+    text-align: center;
+    padding: 40px 20px;
+    color: #999;
+}
 
-    .video-thumbnail {
-        position: relative;
-    }
+.no-results-icon {
+    font-size: 48px;
+    margin-bottom: 15px;
+}
 
-    .play-icon {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        background: rgba(255, 105, 180, 0.8);
-        color: white;
-        border-radius: 50%;
-        width: 40px;
-        height: 40px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 16px;
-    }
+.fullscreen-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,0.9);
+    z-index: 3000;
+    cursor: pointer;
+}
 
-    .loading {
-        text-align: center;
-        padding: 20px;
-        color: #ff69b4;
-    }
+.fullscreen-image {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    max-width: 95%;
+    max-height: 95%;
+    object-fit: contain;
+}
 
-    .error {
-        text-align: center;
-        padding: 20px;
-        color: #dc3545;
-        background: #f8d7da;
-        border-radius: 8px;
-        margin: 10px;
-    }
+.close-fullscreen {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    color: white;
+    font-size: 30px;
+    cursor: pointer;
+    z-index: 3001;
+}
 
-    /* ========== 搜索区域 ========== */
-    .search-container {
-        margin-top: 15px;
+@media (max-width: 375px) {
+    .login-card {
+        padding: 30px 20px;
     }
+    .welcome-icon { font-size: 56px; }
+    .login-title { font-size: 22px; }
+}
 
-    .search-box {
-        display: flex;
-        align-items: center;
-        background: rgba(255,255,255,0.2);
-        border-radius: 25px;
-        padding: 5px;
-        gap: 5px;
-    }
-
-    .search-input {
-        flex: 1;
-        border: none;
-        background: transparent;
-        color: white;
-        padding: 10px 15px;
-        font-size: 14px;
-        border-radius: 20px;
-        outline: none;
-    }
-
-    .search-input::placeholder {
-        color: rgba(255,255,255,0.8);
-    }
-
-    .search-input:focus {
-        background: rgba(255,255,255,0.1);
-    }
-
-    .search-btn, .clear-search-btn {
-        background: rgba(255,255,255,0.3);
-        border: none;
-        color: white;
-        padding: 8px 12px;
-        border-radius: 20px;
-        font-size: 16px;
-        cursor: pointer;
-        transition: all 0.3s ease;
-    }
-
-    .search-btn:hover, .clear-search-btn:hover {
-        background: rgba(255,255,255,0.4);
-        transform: scale(1.05);
-    }
-
-    .search-results-info {
-        text-align: center;
-        padding: 15px;
-        background: rgba(255, 105, 180, 0.1);
-        border-radius: 10px;
-        margin: 15px;
-        color: #d63384;
-        font-size: 14px;
-    }
-
-    .no-results {
-        text-align: center;
-        padding: 40px 20px;
-        color: #999;
-    }
-
-    .no-results-icon {
-        font-size: 48px;
-        margin-bottom: 15px;
-    }
-
-    /* ========== 全屏图片 ========== */
-    .fullscreen-modal {
-        display: none;
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: rgba(0,0,0,0.9);
-        z-index: 3000;
-        cursor: pointer;
-    }
-
-    .fullscreen-image {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        max-width: 95%;
-        max-height: 95%;
-        object-fit: contain;
-    }
-
-    .close-fullscreen {
-        position: absolute;
-        top: 20px;
-        right: 20px;
-        color: white;
-        font-size: 30px;
-        cursor: pointer;
-        z-index: 3001;
-    }
-
-    /* ========== 响应式优化 ========== */
-    @media (max-width: 375px) {
-        .login-card {
-            padding: 30px 20px;
-        }
-        .welcome-icon { font-size: 56px; }
-        .login-title { font-size: 22px; }
-    }
-  /* 新增样式 */
 .love-days-count {
     font-size: 16px;
     color: #d63384;
@@ -981,7 +945,8 @@
     letter-spacing: 1px;
     text-shadow: 0 1px 2px rgba(255,105,180,0.2);
 }
-     #bgVideo {
+
+#bgVideo {
     position: fixed;
     top: 0;
     left: 0;
@@ -990,21 +955,23 @@
     object-fit: cover;
     z-index: -1;
 }
-#pet{
-    position:fixed;
-    width:100px;
-    height:100px;
-    left:50px;
-    top:200px;
-    z-index:9999;
-    cursor:pointer;
-    user-select:none;
+
+#pet {
+    position: fixed;
+    width: 100px;
+    height: 100px;
+    left: 50px;
+    top: 200px;
+    z-index: 9999;
+    cursor: pointer;
+    user-select: none;
 }
-#pet img{
-    width:100%;
-    height:100%;
+
+#pet img {
+    width: 100%;
+    height: 100%;
 }
-/* ===== 宠物圆形彩色菜单 ===== */
+
 #petMenu {
     position: fixed;
     display: none;
@@ -1046,9 +1013,9 @@
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.35),
                 inset 0 2px 4px rgba(255, 255, 255, 0.55);
 }
+
 #petMenu button:active { scale: 0.92; }
 
-/* 五颜六色 */
 #petMenu button:nth-child(1) { background: linear-gradient(135deg, #ff9a9e, #ff5e7e); }
 #petMenu button:nth-child(2) { background: linear-gradient(135deg, #ffd86f, #fc9842); }
 #petMenu button:nth-child(3) { background: linear-gradient(135deg, #a8e063, #56ab2f); }
@@ -1059,23 +1026,24 @@
 #petMenu button:nth-child(8) { background: linear-gradient(135deg, #fddb92, #d1fdff); color: #b35a00; text-shadow: none; }
 #petMenu button:nth-child(9) { background: linear-gradient(135deg, #667eea, #764ba2); }
 
-/* 依次从宠物中心弹出，带回弹 */
 @keyframes petBtnPop {
-    0%   { transform: translate(0, 0) scale(0) rotate(-200deg); opacity: 0; }
-    65%  { transform: translate(calc(var(--tx) * 1.12), calc(var(--ty) * 1.12)) scale(1.15) rotate(10deg); opacity: 1; }
+    0% { transform: translate(0, 0) scale(0) rotate(-200deg); opacity: 0; }
+    65% { transform: translate(calc(var(--tx) * 1.12), calc(var(--ty) * 1.12)) scale(1.15) rotate(10deg); opacity: 1; }
     100% { transform: translate(var(--tx), var(--ty)) scale(1) rotate(0deg); opacity: 1; }
 }
-     .love-text {
+
+.love-text {
     font-family: 'Fredoka One', cursive;
     font-size: 28px;
-    color: #A8D8EA; /* 浅蓝 */
+    color: #A8D8EA;
     letter-spacing: 2px;
     text-shadow: 0 2px 6px rgba(168,216,234,.35);
-    white-space: nowrap; /* 防换行 */
+    white-space: nowrap;
     overflow: hidden;
-    border-right: 3px solid #A8D8EA; /* 光标效果 */
+    border-right: 3px solid #A8D8EA;
 }
-     /* ========== 头像设置弹窗（奶白色） ========== */
+
+/* ===== 头像设置弹窗 ===== */
 .avatar-modal {
     display: none;
     position: fixed;
@@ -1088,7 +1056,7 @@
 .avatar-modal.show { display: flex; }
 
 .avatar-card {
-    background: #FFF8EE; /* 奶白色 */
+    background: #FFF8EE;
     border-radius: 24px;
     padding: 30px 24px;
     width: 85%;
@@ -1150,7 +1118,6 @@
 .avatar-cancel-btn { background: #f3f3f3; color: #666; }
 .avatar-save-btn { background: linear-gradient(135deg, #ff69b4, #ff1493); color: white; }
 
-/* 卡片上的上传者徽标 */
 .uploader-badge {
     display: flex;
     align-items: center;
@@ -1170,7 +1137,7 @@
     justify-content: center;
     position: absolute;
     top: -8px;
-    left: 8px;      /* 贴着输入框左上角 */
+    left: 8px;
     min-width: 20px;
     height: 20px;
     padding: 0 5px;
@@ -1179,7 +1146,7 @@
     font-size: 11px;
     font-weight: 700;
     border-radius: 10px;
-    border: 2px solid white;   /* 让它像个"角标"，不会跟输入框边框糊在一起 */
+    border: 2px solid white;
     box-shadow: 0 1px 4px rgba(0,0,0,0.25);
     cursor: pointer;
     z-index: 5;
@@ -1191,7 +1158,6 @@
     font-weight: 600;
 }
 
-/* 评论里的头像 */
 .comment-author {
     display: flex;
     align-items: center;
@@ -1211,7 +1177,6 @@
     color: #d63384;
 }
 
-/* 详情页上传者信息 */
 .detail-uploader {
     display: flex;
     align-items: center;
@@ -1230,7 +1195,7 @@
     font-weight: 600;
     color: #d63384;
 }
-     /* ===== 表情包相关 ===== */
+
 .sticker-pick-btn {
     background: #fdf2f8;
     border: 2px solid #ffb6c1;
@@ -1240,6 +1205,7 @@
     cursor: pointer;
 }
 
+/* ===== 表情包弹窗（修正版） ===== */
 .sticker-modal {
     display: none;
     position: fixed;
@@ -1254,14 +1220,15 @@
 .sticker-modal-content {
     background: #FFF8EE;
     border-radius: 20px;
-    padding: 20px;
-    width: 85%;
-    max-width: 340px;
-    height: min(520px, 72vh);  /* 改成固定高度，而不是 max-height */
+    padding: 16px;
+    width: 90%;
+    max-width: 360px;
+    height: min(520px, 72vh);
     display: flex;
     flex-direction: column;
-    overflow: hidden;          /* 内容超出时不再撑破弹窗 */
+    overflow: hidden;
 }
+
 .sticker-modal-header {
     display: flex;
     justify-content: space-between;
@@ -1276,32 +1243,58 @@
 
 .sticker-grid {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 10px;
+    grid-template-columns: repeat(auto-fill, minmax(64px, 1fr));
+    gap: 8px;
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
     flex: 1 1 auto;
     min-height: 0;
-    margin-bottom: 14px;
-    padding-right: 4px;
+    margin-bottom: 12px;
+    padding: 2px 4px 2px 0;
     scrollbar-width: thin;
     scrollbar-color: #ffb6c1 transparent;
+    align-content: start;
 }
 .sticker-grid::-webkit-scrollbar { width: 6px; }
 .sticker-grid::-webkit-scrollbar-thumb { background: #ffb6c1; border-radius: 6px; }
 .sticker-grid::-webkit-scrollbar-track { background: transparent; }
+
 .sticker-grid-item {
     width: 100%;
-    aspect-ratio: 1/1;
+    aspect-ratio: 1 / 1;
+    padding: 0;
+    position: relative;
+    min-width: 0;
+    min-height: 0;
+}
+
+.sticker-grid-item-inner {
+    width: 100%;
+    height: 100%;
+    border-radius: 10px;
+    overflow: hidden;
+    cursor: pointer;
+    background: #fdf2f8;
+    border: 1px solid #ffe0ec;
+    transition: transform 0.15s ease;
     display: flex;
     align-items: center;
     justify-content: center;
-    overflow: visible;
     position: relative;
-    z-index: 0;
 }
-.sticker-grid-item img { width: 100%; height: 100%; object-fit: cover; }
-.sticker-grid-item:hover { transform: scale(1.06); }
+
+.sticker-grid-item-inner img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.sticker-grid-item-inner:hover {
+    transform: scale(1.06);
+    z-index: 10;
+}
+
 .sticker-grid-empty {
     grid-column: 1 / -1;
     text-align: center;
@@ -1406,30 +1399,28 @@
     opacity: 1;
     transform: translate(-50%, 0);
 }
-     .heart {
-  position: fixed;
-  bottom: 50%;
-  left: 50%;
-  font-size: 20px;
-  animation: floatUp 1.2s ease-out forwards;
-  pointer-events: none;
-  z-index: 99999;
+
+.heart {
+    position: fixed;
+    bottom: 50%;
+    left: 50%;
+    font-size: 20px;
+    animation: floatUp 1.2s ease-out forwards;
+    pointer-events: none;
+    z-index: 99999;
 }
 
 @keyframes floatUp {
-  0% {
-    transform: translate(-50%, 0) scale(1);
-    opacity: 1;
-  }
-  100% {
-    transform: translate(
-      calc(-50% + (var(--x) * 80px)),
-      -200px
-    ) scale(1.5);
-    opacity: 0;
-  }
+    0% {
+        transform: translate(-50%, 0) scale(1);
+        opacity: 1;
+    }
+    100% {
+        transform: translate(calc(-50% + (var(--x) * 80px)), -200px) scale(1.5);
+        opacity: 0;
+    }
 }
-     /* 已读头像列表 */
+
 .comment-readers {
     display: flex;
     align-items: center;
@@ -1444,7 +1435,6 @@
     object-fit: cover;
     border: 1.5px solid #ffb6c1;
     background: #ffb6c1;
-    title: attr(data-name);
 }
 .readers-label {
     font-size: 11px;
@@ -1452,7 +1442,6 @@
     margin-left: 2px;
 }
 
-/* 删除按钮 */
 .comment-delete-btn {
     background: none;
     border: none;
@@ -1468,47 +1457,15 @@
     color: #ff4d6d;
 }
 
-/* 评论头部（头像+名字+删除按钮同一行） */
-.comment-author {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin-bottom: 6px;
-}
-     /* 表情包网格项 - 外层容器，负责占位 */
-.sticker-grid-item {
-    width: 100%;
-    aspect-ratio: 1/1;
-    /* 关键：通过 padding 预留出 hover 放大所需的空间 */
-    padding: 8px; /* 这个值可以根据缩放比例调整，8px 对于 1.06 倍缩放足够了 */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-/* 表情包网格项 - 内部容器，负责显示和交互 */
-.sticker-grid-item-inner {
-    width: 100%;
-    height: 100%;
-    border-radius: 10px;
-    overflow: hidden;
-    cursor: pointer;
-    background: #fdf2f8;
-    border: 1px solid #ffe0ec;
-    transition: transform 0.15s ease;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
 #accountAvatar {
-    position: fixed; /* 原本就是，这里确保定位正确，方便星星定位参照 */
+    position: fixed;
 }
 
 .avatar-star {
     position: fixed;
     pointer-events: none;
     font-size: 14px;
-    z-index: 9997; /* 略低于头像(9998)，不挡点击 */
+    z-index: 9997;
     animation: avatarStarFloat 1.6s ease-out forwards;
     opacity: 0.9;
 }
@@ -1523,19 +1480,7 @@
         opacity: 0;
     }
 }
-.sticker-grid-item-inner img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
 
-/* hover 效果应用在内部容器上 */
-.sticker-grid-item-inner:hover {
-    transform: scale(1.06);
-    z-index: 10;
-    position: relative;
-}
-     /* ===== 来访足迹 ===== */
 .vt-card{background:white;border:1.5px solid #ffe0ec;border-radius:16px;overflow:hidden;margin-top:20px}
 .vt-header{display:flex;align-items:center;gap:10px;padding:10px 14px;cursor:pointer;user-select:none}
 .vt-header:active{background:#fdf2f8}
@@ -1556,7 +1501,7 @@
 .vt-row-name{font-size:13px;font-weight:600;color:#333;margin:0}
 .vt-row-rel{font-size:11px;color:#bbb;margin:0}
 .vt-row-time{font-size:11px;color:#ccc;white-space:nowrap;margin-left:auto}
- /* ===== 帖子封面角标 ===== */
+
 .card-badge-wrap {
     position: absolute;
     top: 8px;
@@ -1569,7 +1514,6 @@
     pointer-events: none;
 }
 
-/* NEW 标签 */
 .new-badge {
     background: linear-gradient(135deg, #ff69b4, #ff1493);
     color: white;
@@ -1583,7 +1527,6 @@
     white-space: nowrap;
 }
 
-/* 未读评论红圈 */
 .unread-dot {
     min-width: 20px;
     height: 20px;
@@ -1604,9 +1547,10 @@
 
 @keyframes badgePulse {
     0%, 100% { transform: scale(1); opacity: 1; }
-    50%       { transform: scale(1.1); opacity: 0.85; }
+    50% { transform: scale(1.1); opacity: 0.85; }
 }
-     .swipe-wrap {
+
+.swipe-wrap {
     position: relative;
     overflow: hidden;
     width: 100%;
@@ -1630,16 +1574,17 @@
     background: rgba(0,0,0,0.45); color: white;
     font-size: 10px; padding: 2px 6px; border-radius: 10px;
 }
-     /* ===== 音乐播放器 ===== */
+
 #accountAvatar.spinning #avatarImg {
     animation: avatarSpin 0.6s ease-in-out;
 }
 @keyframes avatarSpin {
-    0%   { transform: rotate(0deg) scale(1); }
-    50%  { transform: rotate(180deg) scale(1.15); }
+    0% { transform: rotate(0deg) scale(1); }
+    50% { transform: rotate(180deg) scale(1.15); }
     100% { transform: rotate(360deg) scale(1); }
 }
 
+/* ===== 音乐播放条 ===== */
 .music-bar {
     position: fixed;
     bottom: 90px;
@@ -1685,7 +1630,7 @@
 }
 @keyframes discSpin {
     from { transform: rotate(0deg); }
-    to   { transform: rotate(360deg); }
+    to { transform: rotate(360deg); }
 }
 .music-bar-info {
     flex: 1;
@@ -1729,7 +1674,8 @@
     width: 0%;
     transition: width 0.5s linear;
 }
-     .detail-dot {
+
+.detail-dot {
     width: 6px; height: 6px; border-radius: 50%;
     background: rgba(255,255,255,0.45);
     transition: background .2s;
@@ -1738,7 +1684,9 @@
     background: white;
     width: 18px;
     border-radius: 4px;
-}.comment-unread-dot {
+}
+
+.comment-unread-dot {
     width: 8px;
     height: 8px;
     border-radius: 50%;
@@ -1751,19 +1699,8 @@
 .comment-reply-item.is-unread {
     background: #fff0f6;
     border-left-color: #ff69b4;
-}.comment-replies {
-    margin-top: 10px;
-    margin-left: 20px;
-    padding-left: 12px;
-    border-left: 2px solid #ffe0ec;
-    max-height: 2000px;
-    overflow: hidden;
-    transition: max-height 0.3s ease;
 }
-.comment-replies.collapsed {
-    max-height: 0;
-    margin-top: 0;
-}
+
 .replies-toggle-btn {
     display: flex;
     align-items: center;
@@ -1791,7 +1728,8 @@
 .replies-toggle-icon.open {
     transform: rotate(180deg);
 }
-     .love-letter {
+
+.love-letter {
     display: inline-block;
     animation: letterBounce 1.3s ease-in-out infinite;
 }
@@ -1799,7 +1737,8 @@
     0%, 100% { transform: translateY(0); }
     50% { transform: translateY(-8px); }
 }
-     .header-title-letter {
+
+.header-title-letter {
     display: inline-block;
     animation: headerLetterBounce 1.3s ease-in-out infinite;
 }
@@ -1807,9 +1746,10 @@
     0%, 100% { transform: translateY(0); }
     50% { transform: translateY(-6px); }
 }
-     .header-love-days {
+
+.header-love-days {
     position: absolute;
-    right: 70px;   /* 避开右侧的上传按钮 */
+    right: 70px;
     top: 14px;
     background: rgba(255, 255, 255, 0.35);
     backdrop-filter: blur(6px);
@@ -1823,7 +1763,9 @@
     box-shadow: 0 2px 8px rgba(0,0,0,0.15);
     white-space: nowrap;
     text-shadow: 0 1px 2px rgba(0,0,0,0.2);
-}/* ===== 评论语音 ===== */
+}
+
+/* ===== 语音录制 ===== */
 .voice-overlay {
     display: none;
     position: fixed; inset: 0;
@@ -1869,7 +1811,7 @@
 }
 .voice-mic::after { animation-delay: 0.8s; }
 @keyframes voiceRing {
-    0%   { transform: scale(1);   opacity: 0.8; }
+    0% { transform: scale(1); opacity: 0.8; }
     100% { transform: scale(1.9); opacity: 0; }
 }
 
@@ -1897,7 +1839,7 @@
 .voice-wave i:nth-child(7) { animation-delay: 0s; }
 @keyframes voiceWave {
     0%, 100% { height: 6px; }
-    50%      { height: 26px; }
+    50% { height: 26px; }
 }
 
 .voice-time {
@@ -1908,7 +1850,6 @@
 }
 .voice-hint { font-size: 12px; color: #aaa; }
 
-/* ===== 评论里的语音条 ===== */
 .voice-row {
     display: flex;
     align-items: center;
@@ -1916,29 +1857,35 @@
     margin-top: 8px;
     padding: 8px 12px;
     max-width: 240px;
-    background: #fff;
-    border: 1.5px solid #ffe0ec;
+    background: linear-gradient(135deg, #ff9ec0 0%, #ef6a97 100%);
+    border: 1.5px solid #ef6a97;
     border-radius: 12px;
     cursor: pointer;
     user-select: none;
-    transition: border-color .2s ease, background .2s ease;
+    transition: border-color .2s ease, background .2s ease, box-shadow .2s ease;
+    box-shadow: 0 2px 8px rgba(239, 106, 151, 0.25);
 }
-.voice-row:hover  { border-color: #ffb6c1; background: #fffafc; }
+.voice-row:hover {
+    background: linear-gradient(135deg, #ffb3cd 0%, #f582a9 100%);
+    border-color: #f582a9;
+    box-shadow: 0 3px 12px rgba(239, 106, 151, 0.35);
+}
 .voice-row:active { transform: scale(.98); }
 
 .vr-play {
     width: 26px; height: 26px;
     border-radius: 50%;
-    border: 1.5px solid #ff69b4;
-    color: #ff69b4;
+    border: 1.5px solid #fff;
+    color: #fff;
     font-size: 10px;
     display: flex; align-items: center; justify-content: center;
     flex-shrink: 0;
+    background: rgba(255, 255, 255, 0.15);
     transition: background .2s, color .2s, transform .2s;
 }
 .voice-row.playing .vr-play {
-    background: #ff69b4;
-    color: #fff;
+    background: #fff;
+    color: #ef6a97;
 }
 
 .vr-bar {
@@ -1948,7 +1895,7 @@
 .vr-bar i {
     width: 3px; height: 6px;
     border-radius: 2px;
-    background: #ffc2d9;
+    background: rgba(255, 255, 255, 0.6);
     transition: background .2s;
 }
 .vr-bar i:nth-child(2) { height: 10px; }
@@ -1957,10 +1904,10 @@
 .vr-bar i:nth-child(5) { height: 14px; }
 .vr-bar i:nth-child(6) { height: 10px; }
 .vr-bar i:nth-child(7) { height: 14px; }
-.vr-bar i:nth-child(8) { height: 8px;  }
+.vr-bar i:nth-child(8) { height: 8px; }
 
 .voice-row.playing .vr-bar i {
-    background: #ff69b4;
+    background: #ffffff;
     animation: vrBounce .9s ease-in-out infinite;
 }
 .voice-row.playing .vr-bar i:nth-child(2) { animation-delay: .1s; }
@@ -1972,21 +1919,20 @@
 .voice-row.playing .vr-bar i:nth-child(8) { animation-delay: .3s; }
 @keyframes vrBounce {
     0%, 100% { transform: scaleY(.5); }
-    50%      { transform: scaleY(1.3); }
+    50% { transform: scaleY(1.3); }
 }
 
 .vr-dur {
     font-size: 12px;
-    color: #d63384;
+    color: #fff;
     font-weight: 600;
     flex-shrink: 0;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.12);
 }
 
-/* ===== 发送前的预览条 ===== */
 #voicePreviewBar { background: #fff0f6; border-color: #ffb6c1; }
 #voicePreviewAudio { border-radius: 18px; min-width: 0; }
 
-/* ===== 位置天气 ===== */
 .media-date, .detail-date, .comment-date {
     display: flex;
     flex-wrap: wrap;
@@ -2002,26 +1948,32 @@
 }
 .loc-weather .wx { color: #a074c4; }
 .detail-date .loc-weather, .comment-date .loc-weather { font-size: 12px; }
+
+/* ===== 地图 iframe 覆盖层 ===== */
+#mapFrameWrap {
+    position: fixed; inset: 0; z-index: 99999;
+    display: none; background: transparent;
+}
+#mapFrame {
+    width: 100%; height: 100%; border: none; background: transparent;
+}
 </style>
      <script src="cordova.js"></script>
  </head>
 <body id="v1">
-<!-- 改成这样 -->
 <video id="bgVideo" autoplay muted loop playsinline src="./ok.mp4"></video>
   <div id="v2" class="container">
-    <!-- 登录页面 -->
     <div class="login-page" id="loginPage">
      <div id="v3" class="login-card">
   <div id="v4" class="welcome-icon">LOVE</div>
   <h2 class="love-text" id="loveText"></h2>
-  <p id="loveDays" class="love-days-count">加载中...</p> <!-- 新增行 -->
+  <p id="loveDays" class="love-days-count">加载中...</p>
   <p style="font-size:15px; color:#A8D8EA; letter-spacing:2px; margin-bottom:20px;">
     The encounter between you and me
 </p>
   <div class="error-msg" id="errorMsg">外人不能入内哦🤷‍♂️</div>
 </div>
     </div>
-   <!-- 主页面 -->
    <div class="main-page" id="mainPage">
     <header id="v7" class="header">
      <h1 id="v8" class="header-title">MuMu and DaZi</h1>
@@ -2041,7 +1993,6 @@
        加载中...
      </div>
      <div class="media-grid" id="mediaGrid" style="display: none;">
-      <!-- 媒体项目将从后端加载 -->
      </div>
      <div class="pagination" id="pagination" style="display: none;">
       <button class="page-btn" onclick="previousPage()" id="prevBtn">上一页</button>
@@ -2050,7 +2001,6 @@
      </div>
     </div>
    </div>
-  <!-- 上传模态框 -->
 <div class="upload-modal" id="uploadModal">
     <div class="modal-content">
          <div class="upload-progress-overlay" id="uploadProgressOverlay">
@@ -2097,7 +2047,6 @@
         </div>
     </div>
 </div>
-   <!-- 详情页面 -->
    <div class="detail-page" id="detailPage">
     <div id="v25" class="detail-header">
      <button id="v26" class="back-btn" onclick="hideDetail()">←</button>
@@ -2112,7 +2061,6 @@
       <button class="action-btn" id="likeBtn" onclick="toggleLike()"> <span id="v30">💖</span> <span id="likeCount">0</span> </button>
       <button id="v31" class="action-btn"> <span id="v32">💬</span> <span id="commentCount">0</span> </button>
      </div>
-        <!-- 来访足迹 -->
 <div class="vt-card" id="visitorCard" style="display:none">
     <div class="vt-header" onclick="vtToggle()">
         <div class="vt-avatars" id="vtAvatars"></div>
@@ -2144,13 +2092,12 @@
 
   <div style="display:flex; gap:8px; margin-bottom:15px; position:relative;">
       <div id="unreadBadge" class="unread-float-badge" onclick="scrollToFirstUnread()">0</div>
-      <input type="text" class="comment-input" id="commentInput" placeholder="写下你的想法..." style="margin-bottom:0; flex:1;">
+      <input type="text" class="comment-input" id="commentInput" placeholder="写下你的想法，长按发送语音..." style="margin-bottom:0; flex:1;">
       <button class="sticker-pick-btn" onclick="showStickerPicker()">😀</button>
   </div>
 
   <button id="v35" class="comment-btn" onclick="addComment()">发表评论</button>
   <div id="commentsList">
-   <!-- 评论列表将从后端加载 -->
   </div>
  </div>
     </div>
@@ -2201,7 +2148,6 @@
     <button id="zcBtn" onclick="toggleZcMode()"> 形象</button>
     <button onclick="showLikedPosts()">点赞过的</button>
 </div>
-<!-- ===== 随机抽取弹窗 ===== -->
 <div id="randomPickerModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.55);z-index:10050;align-items:center;justify-content:center;">
   <div style="background:#fff8ee;border-radius:24px;padding:28px 22px;width:88%;max-width:320px;text-align:center;position:relative">
 
@@ -2245,7 +2191,6 @@
     </div>
   </div>
 </div>
-<!-- 账户头像区域（左下角） -->
 <div id="accountAvatar" style="
     position: fixed;
     left: 20px;
@@ -2268,7 +2213,6 @@
         background: #f0f0f0;
         object-fit: cover;
         ">
-    <!-- 新增：全局未读总数徽标 -->
     <div id="totalUnreadBadge" class="unread-dot" style="
         display: none;
         position: absolute;
@@ -2277,7 +2221,6 @@
     ">0</div>
     <div id="avatarName" ...>未登录</div>
 </div>
-<!-- 音乐播放器 -->
 <audio id="bgMusic" preload="none"></audio>
 <div class="music-bar" id="musicBar">
     <div class="music-bar-cover" id="musicCover">🎵</div>
@@ -2291,11 +2234,17 @@
     <div class="music-bar-progress" id="musicProgress"></div>
 </div>
 
+<!-- ===== 地图 iframe 覆盖层（新增） ===== -->
+<div id="mapFrameWrap">
+  <iframe id="mapFrame" src="./map.html"
+    allow="geolocation"></iframe>
+</div>
+
 <script>
 /* ===== 音乐播放器系统 ===== */
 const MUSIC_API = 'http://43.167.237.62:3600';
 
-let musicList = [];       // [{id, title, artist, url, cover_url}]
+let musicList = [];
 let musicIndex = 0;
 let musicPlaying = false;
 let musicLoaded = false;
@@ -2309,31 +2258,25 @@ const musicArtist  = document.getElementById('musicArtist');
 const musicPlayBtn = document.getElementById('musicPlayBtn');
 const musicProgress= document.getElementById('musicProgress');
 
-/* ---- 双击头像触发 ---- */
 let avatarClickTimer = null;
 const accountAvatarEl = document.getElementById('accountAvatar');
 
 accountAvatarEl.addEventListener('click', function(e) {
-    // 阻止原来的 loginWithSwipe（改为只在单击时处理）
     e.stopImmediatePropagation();
 
     if (avatarClickTimer) {
-        // 双击
         clearTimeout(avatarClickTimer);
         avatarClickTimer = null;
         handleAvatarDoubleClick();
     } else {
-        // 等待判断是单击还是双击
         avatarClickTimer = setTimeout(() => {
             avatarClickTimer = null;
-            // 单击：执行原来的登录逻辑
             loginWithSwipe();
         }, 280);
     }
 }, true);
 
 function handleAvatarDoubleClick() {
-    // 旋转动画
     const el = document.getElementById('accountAvatar');
     el.classList.add('spinning');
     setTimeout(() => el.classList.remove('spinning'), 650);
@@ -2347,7 +2290,6 @@ function handleAvatarDoubleClick() {
     }
 }
 
-/* ---- 加载歌单 ---- */
 async function loadMusicList() {
     try {
         const res = await fetch(`${MUSIC_API}/music/list`);
@@ -2355,7 +2297,6 @@ async function loadMusicList() {
         if (data.success && data.data.length) {
             musicList = data.data;
             musicLoaded = true;
-            // 尝试恢复上次播放进度
             const saved = localStorage.getItem('music_index');
             if (saved !== null && parseInt(saved) < musicList.length) {
                 musicIndex = parseInt(saved);
@@ -2371,7 +2312,6 @@ async function loadMusicList() {
     }
 }
 
-/* ---- 应用当前曲目 ---- */
 function applyCurrentTrack() {
     if (!musicList.length) return;
     const track = musicList[musicIndex];
@@ -2391,7 +2331,6 @@ function applyCurrentTrack() {
     localStorage.setItem('music_index', musicIndex);
 }
 
-/* ---- 播放控制 ---- */
 function musicToggle() {
     if (!musicList.length) return;
     if (musicPlaying) {
@@ -2426,12 +2365,10 @@ function musicPrev() {
     }
 }
 
-/* ---- 显示/隐藏播放条 ---- */
 function showMusicBar() {
     musicBar.classList.add('show');
     musicBarVisible = true;
     if (!musicLoaded) return;
-    // 自动开始播放
     if (!musicPlaying) musicToggle();
 }
 
@@ -2440,20 +2377,17 @@ function hideMusicBar() {
     musicBarVisible = false;
 }
 
-/* ---- 进度条更新 ---- */
 audioEl.addEventListener('timeupdate', () => {
     if (!audioEl.duration) return;
     const pct = (audioEl.currentTime / audioEl.duration) * 100;
     musicProgress.style.width = pct + '%';
 });
 
-/* ---- 自动播下一首 ---- */
 audioEl.addEventListener('ended', () => {
     musicNext();
     if (musicPlaying) audioEl.play().catch(() => {});
 });
 
-/* ---- 播放状态同步（切歌后） ---- */
 audioEl.addEventListener('play',  () => {
     musicPlaying = true;
     musicPlayBtn.textContent = '⏸️';
@@ -2479,7 +2413,6 @@ let rpResultIdx = 0;
 let rpSpinning = false;
 let rpResultId = null;
 
-// ---- 打开弹窗，每次随机取一组 ----
 async function showRandomPicker() {
   hidePetMenu?.();
   document.getElementById('randomPickerModal').style.display = 'flex';
@@ -2489,7 +2422,6 @@ async function showRandomPicker() {
   document.getElementById('rpStrip').innerHTML = '';
 
   try {
-    // 第一步：获取总数
     const firstRes = await fetch(`${API_BASE}/media?page=1&limit=1`);
     const firstData = await firstRes.json();
     if (!firstData.success || !firstData.total_items) {
@@ -2501,10 +2433,7 @@ async function showRandomPicker() {
     const GROUP_SIZE = 50;
     const totalGroups = Math.ceil(total / GROUP_SIZE);
 
-    // 第二步：随机选一组（每次打开都不同）
     const randomGroup = Math.floor(Math.random() * totalGroups);
-    // 后端按 created_at DESC 排序，page=1 是最新，page=totalGroups 是最老
-    // randomGroup=0 对应最老那组，randomGroup=totalGroups-1 对应最新那组
     const targetPage = totalGroups - randomGroup;
 
     const res = await fetch(`${API_BASE}/media?page=${targetPage}&limit=${GROUP_SIZE}`);
@@ -2525,7 +2454,6 @@ async function showRandomPicker() {
   }
 }
 
-// ---- 构建滚动列表 ----
 function buildRpStrip() {
   const strip = document.getElementById('rpStrip');
   strip.innerHTML = '';
@@ -2575,7 +2503,6 @@ function buildRpStrip() {
   rpGoTo(0, true);
 }
 
-// ---- 滚动到指定位置 ----
 function rpGoTo(idx, instant) {
   const strip = document.getElementById('rpStrip');
   strip.style.transition = instant ? 'none' : 'transform 0.07s linear';
@@ -2583,7 +2510,6 @@ function rpGoTo(idx, instant) {
   rpCurrentIdx = idx;
 }
 
-// ---- 开始抽取 ----
 function doRandomSpin() {
   if (rpSpinning || !rpAllMedia.length) return;
   rpSpinning = true;
@@ -2617,7 +2543,6 @@ function doRandomSpin() {
   setTimeout(step, delay);
 }
 
-// ---- 抽取完成 ----
 function rpDone() {
   rpSpinning = false;
   document.getElementById('rpShimmer').style.display = 'none';
@@ -2633,32 +2558,27 @@ function rpDone() {
   if (navigator.vibrate) navigator.vibrate([80, 40, 120]);
 }
 
-// ---- 点「再抽一次」时重新换一组再抽 ----
 const _origSpinBtn = document.getElementById('rpSpinBtn');
 if (_origSpinBtn) {
   _origSpinBtn.addEventListener('click', async function () {
     if (this.textContent.includes('再抽')) {
-      // 重新随机换一组数据，再执行抽取
       await showRandomPicker();
-      // showRandomPicker 会重置按钮，手动触发一次抽取
       setTimeout(doRandomSpin, 300);
     }
   });
 }
 
-// ---- 进入详情 ----
 function enterRandomResult() {
   if (!rpResultId) return;
-  const idToShow = rpResultId;  // 先把 ID 存起来
-  hideRandomPicker();            // 再关弹窗（rpResultId 在这里被清空）
+  const idToShow = rpResultId;
+  hideRandomPicker();
   if (document.getElementById('mainPage').style.display !== 'block') {
     document.getElementById('loginPage').style.display = 'none';
     document.getElementById('mainPage').style.display = 'block';
   }
-  showDetail(idToShow);          // 用之前存好的 ID
+  showDetail(idToShow);
 }
 
-// ---- 爱心爆发 ----
 function spawnHearts(count = 28) {
   for (let i = 0; i < count; i++) {
     const heart = document.createElement('div');
@@ -2672,7 +2592,6 @@ function spawnHearts(count = 28) {
   }
 }
 
-// ---- 关闭弹窗 ----
 function hideRandomPicker() {
   document.getElementById('randomPickerModal').style.display = 'none';
   document.getElementById('rpSpinBtn').textContent = '🎲 开始抽取';
@@ -2689,7 +2608,99 @@ let touchEndY = 0;
 const minSwipeDistance = 50;
 let isSearchMode = false;
 let searchQuery = '';
-/* ========== 定位（浏览器 navigator.geolocation / Cordova 插件自动接管） ========== */
+
+/* ==========================================================
+   地图 iframe 控制：点击地址 → 打开 map.html → 本地渲染
+   ========================================================== */
+function openPostMap(post) {
+    const lat = parseFloat(post.lat);
+    const lng = parseFloat(post.lng);
+    if (!lat || !lng) {
+        showStickerToast('这条记录没有位置信息哦');
+        return;
+    }
+
+    const wrap  = document.getElementById('mapFrameWrap');
+    const frame = document.getElementById('mapFrame');
+    if (!wrap || !frame) {
+        showStickerToast('地图容器未找到');
+        return;
+    }
+
+    wrap.style.display = 'block';
+
+    // 基础 payload（不含我的位置）
+    const basePayload = {
+        lng, lat,
+        address:      post.location || '帖子位置',
+        authorName:   post.uploader_name   || 'TA',
+        authorAvatar: post.uploader_avatar
+            ? (post.uploader_avatar.startsWith('/') ? API_BASE + post.uploader_avatar : post.uploader_avatar)
+            : '',
+        myName:       myProfile.nickname   || '我',
+        myAvatar:     myProfile.avatar_url
+            ? (myProfile.avatar_url.startsWith('/') ? API_BASE + myProfile.avatar_url : myProfile.avatar_url)
+            : ''
+    };
+
+    // 发送消息到 iframe
+    const send = (myLng, myLat) => {
+        const payload = Object.assign({}, basePayload);
+        if (myLng != null && myLat != null) {
+            payload.myLng = myLng;
+            payload.myLat = myLat;
+        }
+        try {
+            frame.contentWindow.postMessage({ type: 'openLoveMap', payload }, '*');
+        } catch (e) { console.warn('postMessage 失败', e); }
+    };
+
+    // 等 iframe 加载完成后，先定位再发送
+    const afterFrameReady = () => {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                (pos) => {
+                    send(pos.coords.longitude, pos.coords.latitude);
+                },
+                (err) => {
+                    console.warn('父页面定位失败:', err.message || err.code);
+                    send();  // 定位失败，只显示作者位置
+                },
+                { enableHighAccuracy: true, timeout: 9000, maximumAge: 60000 }
+            );
+        } else {
+            send();
+        }
+    };
+
+    if (frame.dataset.loaded === '1') {
+        afterFrameReady();
+    } else {
+        frame.onload = () => {
+            frame.dataset.loaded = '1';
+            afterFrameReady();
+        };
+        // 兜底：有些浏览器 onload 不触发，延迟调用
+        setTimeout(() => {
+            if (!frame.dataset.loaded) {
+                frame.dataset.loaded = '1';
+                afterFrameReady();
+            }
+        }, 800);
+    }
+}
+function closeMapFrame() {
+    const wrap = document.getElementById('mapFrameWrap');
+    if (wrap) wrap.style.display = 'none';
+}
+
+window.addEventListener('message', function (e) {
+    if (e.data && e.data.type === 'closeMap') {
+        closeMapFrame();
+    }
+});
+
+/* ========== 定位 ========== */
 function getCurrentLocation() {
     return new Promise((resolve) => {
         if (!navigator.geolocation) {
@@ -2702,16 +2713,16 @@ function getCurrentLocation() {
                 lon: pos.coords.longitude.toFixed(6),
             }),
             (err) => {
-                // 浏览器：用户拒绝 / 超时 / 无 GPS；APK：插件报错
                 console.warn('定位失败:', err.message || err.code);
-                resolve(null);   // 拿不到就 null，不阻塞发帖/评论
+                resolve(null);
             },
             { enableHighAccuracy: false, timeout: 8000, maximumAge: 10 * 60 * 1000 }
         );
     });
 }
+
 /* ==================================================
-   语音录制：浏览器 MediaRecorder / Cordova Media 插件
+   语音录制
    ================================================== */
 let pendingVoiceUrl = null;
 let pendingVoiceDuration = 0;
@@ -2721,15 +2732,12 @@ let voiceStartTime  = 0;
 let voiceTimer      = null;
 let voiceLongPressTimer = null;
 
-// Cordova 分支用
 let voiceMedia      = null;
 let voiceMediaPath  = '';
 
-// 浏览器分支用
 let voiceRecorder   = null;
 let voiceChunks     = [];
 
-/* ---- 长按事件绑定 ---- */
 function setupVoiceLongPress() {
     const input = document.getElementById('commentInput');
     if (!input || input.dataset.voiceBound) return;
@@ -2737,12 +2745,10 @@ function setupVoiceLongPress() {
 
     input.addEventListener('contextmenu', e => e.preventDefault());
 
-    // 触屏
     input.addEventListener('touchstart',  onVoiceStart, { passive: true });
     input.addEventListener('touchend',    onVoiceEnd,   { passive: true });
     input.addEventListener('touchcancel', onVoiceEnd,   { passive: true });
 
-    // PC 鼠标（方便桌面浏览器调试）
     input.addEventListener('mousedown', onVoiceStart);
     document.addEventListener('mouseup', onVoiceEnd);
 }
@@ -2750,10 +2756,10 @@ function setupVoiceLongPress() {
 function onVoiceStart() {
     if (voiceRecording) return;
     const input = document.getElementById('commentInput');
-    if (input && input.value.trim()) return;   // 有文字不录音
+    if (input && input.value.trim()) return;
 
     clearTimeout(voiceLongPressTimer);
-    voiceLongPressTimer = setTimeout(startVoiceRecord, 500);  // 长按 500ms 启动
+    voiceLongPressTimer = setTimeout(startVoiceRecord, 500);
 }
 
 function onVoiceEnd() {
@@ -2761,24 +2767,20 @@ function onVoiceEnd() {
     if (voiceRecording) stopVoiceRecord();
 }
 
-/* ---- 启动录音：按环境分流 ---- */
 async function startVoiceRecord() {
     try { window.getSelection()?.removeAllRanges(); } catch (e) {}
     try { document.activeElement?.blur(); } catch (e) {}
 
-    // APK 环境
     if (window.cordova && window.Media) {
         startVoiceRecordCordova();
         return;
     }
 
-    // 浏览器环境
     if (navigator.mediaDevices && window.MediaRecorder) {
         await startVoiceRecordWeb();
         return;
     }
 
-    // 非安全上下文（局域网 IP 访问）
     if (!window.isSecureContext) {
         showStickerToast('当前页面不是安全上下文，无法录音。请用 localhost 或 https 访问');
     } else {
@@ -2799,7 +2801,6 @@ function stopVoiceRecord() {
     }
 }
 
-/* ========== 浏览器分支 ========== */
 async function startVoiceRecordWeb() {
     try {
         const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
@@ -2812,7 +2813,7 @@ async function startVoiceRecordWeb() {
             stream.getTracks().forEach(t => t.stop());
             const blob = new Blob(voiceChunks, { type: 'audio/webm' });
             voiceChunks = [];
-            if (blob.size < 800) {   // 太短视为误触
+            if (blob.size < 800) {
                 showStickerToast('录音太短啦');
                 stopVoiceOverlayUI();
                 return;
@@ -2845,7 +2846,6 @@ function stopVoiceRecordWeb() {
     voiceRecorder = null;
 }
 
-/* ========== Cordova 分支（保留，APK 里用） ========== */
 function startVoiceRecordCordova() {
     try {
         const fname = 'rec_' + Date.now() + '.m4a';
@@ -2900,7 +2900,6 @@ function stopVoiceRecordCordova() {
     });
 }
 
-/* ========== 公共：上传 & UI ========== */
 async function uploadVoiceBlob(blob, filename) {
     const duration = Math.max(1, Math.round((Date.now() - voiceStartTime) / 1000));
     const fd = new FormData();
@@ -2967,7 +2966,7 @@ function startVoiceTimer() {
         const sec = (Date.now() - voiceStartTime) / 1000;
         const t = document.getElementById('voiceTime');
         if (t) t.textContent = sec.toFixed(1) + '"';
-        if (sec >= 60) stopVoiceRecord();   // 60 秒自动停
+        if (sec >= 60) stopVoiceRecord();
     }, 100);
 }
 function stopVoiceTimer() {
@@ -3006,13 +3005,12 @@ function typeWriter() {
         index++;
         setTimeout(typeWriter, 200);
     } else {
-        // 打字结束后，转为逐字跳动
         startLetterBounce();
     }
 }
 
 function startLetterBounce() {
-    loveTextEl.style.borderRight = "none"; // 去掉光标
+    loveTextEl.style.borderRight = "none";
     loveTextEl.innerHTML = text.split('').map((ch, i) => {
         const displayCh = ch === ' ' ? '&nbsp;' : ch;
         return `<span class="love-letter" style="animation-delay:${i * 0.08}s">${displayCh}</span>`;
@@ -3020,7 +3018,6 @@ function startLetterBounce() {
 }
 
 typeWriter();
-
 
 function showBubble() {
     const bubble = document.createElement("div");
@@ -3039,14 +3036,13 @@ function showBubble() {
 ================================== */
 const pet = document.getElementById("pet");
 const menu = document.getElementById("petMenu");
-/* ---------- 圆形菜单布局 ---------- */
-const PET_MENU_R = 105;   // 圆环半径
+const PET_MENU_R = 105;
 
 function setupPetMenu() {
     const btns = menu.querySelectorAll('button');
     const n = btns.length;
     btns.forEach((b, i) => {
-        const a = -Math.PI / 2 + i * 2 * Math.PI / n;   // 从正上方开始顺时针排布
+        const a = -Math.PI / 2 + i * 2 * Math.PI / n;
         b.style.setProperty('--tx', Math.cos(a) * PET_MENU_R + 'px');
         b.style.setProperty('--ty', Math.sin(a) * PET_MENU_R + 'px');
         b.style.setProperty('--i', i);
@@ -3059,17 +3055,15 @@ function togglePetMenu() {
         menu.style.display = 'none';
         return;
     }
-    // 以宠物中心为圆心，并限制在屏幕内，避免按钮被挤出屏幕
     const m = PET_MENU_R + 40;
     const cx = Math.max(m, Math.min(px + PET_SIZE / 2, window.innerWidth - m));
     const cy = Math.max(m, Math.min(py + PET_SIZE / 2, window.innerHeight - m));
     menu.style.left = cx + 'px';
     menu.style.top = cy + 'px';
-    menu.style.display = 'block';   // display 变为 block 时会重新触发弹出动画
+    menu.style.display = 'block';
 }
 
-/* ---------- GIF切换（支持 zc 模式）---------- */
-const ZC_API = 'http://43.167.237.62:3800';  // ← zc 服务器地址
+const ZC_API = 'http://43.167.237.62:3800';
 
 let petGifs     = ['1.gif', '2.gif', '3.gif'];
 let petGifIdx   = 0;
@@ -3091,7 +3085,6 @@ function startPetLoop(gifs) {
     }
 }
 
-// 页面加载先跑本地
 startPetLoop(['1.gif', '2.gif', '3.gif']);
 
 async function loadZcGifs() {
@@ -3099,31 +3092,24 @@ async function loadZcGifs() {
         const r = await fetch(`${ZC_API}/pet/zc/gifs`);
         const d = await r.json();
 
-        // 适配新格式：从 data 数组中提取启用的文件URL
         if (d.success && d.data && d.data.length) {
             const activeCategory = d.active_category || '全部';
-
-            // 过滤：只取 enabled=true 的文件
             let filtered = d.data.filter(item => item.enabled);
-
-            // 如果当前分类不是"全部"，再按分类筛选
             if (activeCategory !== '全部') {
                 filtered = filtered.filter(item => item.category === activeCategory);
             }
-
             if (filtered.length) {
                 startPetLoop(filtered.map(item => item.url));
                 return true;
             }
         }
-    } catch (e) { /* 服务器不可达，静默 */ }
+    } catch (e) { }
     return false;
 }
 async function toggleZcMode() {
     hidePetMenu();
     zcModeOn = !zcModeOn;
 
-    // 通知服务端保存偏好
     fetch(`${ZC_API}/pet/zc/pref`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -3145,8 +3131,7 @@ function updateZcBtn() {
     const btn = document.getElementById('zcBtn');
     if (btn) btn.textContent = zcModeOn ? '✅ zc 形象' : 'zc 形象';
 }
-/* ---------- 桌宠状态 ---------- */
-let mode = "free"; // free | edge | fixed | flash | manual
+let mode = "free";
 let px = 50;
 let py = 200;
 const PET_SIZE = 100;
@@ -3157,18 +3142,14 @@ let flashCount = 0;
 let lastActionTime = Date.now();
 const EDGE_GAP = 20;
 
-/* ---------- 点击菜单 ---------- */
 pet.addEventListener("click", (e) => {
-    // 拖拽结束不触发click（位移超过5px视为拖拽）
     if (didDrag) return;
-    // 固定模式下点击恢复自由游走
     if (mode === "fixed") mode = "free";
     createHearts(e.pageX, e.pageY);
     showBubble();
     togglePetMenu();
 });
 
-/* ---------- 自由移动 ---------- */
 function freeMove() {
     px += vx;
     py += vy;
@@ -3182,7 +3163,6 @@ function freeMove() {
     pet.style.top = py + "px";
 }
 
-/* ---------- 边缘检测 ---------- */
 function nearEdge() {
     const maxX = window.innerWidth - PET_SIZE;
     const maxY = window.innerHeight - PET_SIZE;
@@ -3194,7 +3174,6 @@ function nearEdge() {
     );
 }
 
-/* ---------- 贴边移动 ---------- */
 function edgeMove() {
     const maxX = window.innerWidth - PET_SIZE;
     const maxY = window.innerHeight - PET_SIZE;
@@ -3218,7 +3197,6 @@ function edgeMove() {
     pet.style.top = py + "px";
 }
 
-/* ---------- 闪现模式 ---------- */
 function startFlashMode() {
     mode = "flash";
     flashCount = 0;
@@ -3238,15 +3216,13 @@ function startFlashMode() {
     }, 8000);
 }
 
-/* ---------- 拖拽 ---------- */
 let dragging = false;
-let didDrag = false; // 区分点击和拖拽
+let didDrag = false;
 let offsetX = 0;
 let offsetY = 0;
 let dragStartX = 0;
 let dragStartY = 0;
 
-// PC 鼠标拖拽
 pet.addEventListener("mousedown", (e) => {
     dragging = true;
     didDrag = false;
@@ -3260,14 +3236,12 @@ pet.addEventListener("mousedown", (e) => {
 });
 document.addEventListener("mousemove", (e) => {
     if (!dragging) return;
-    // 位移超过5px才算拖拽
     if (Math.abs(e.clientX - dragStartX) > 5 ||
         Math.abs(e.clientY - dragStartY) > 5) {
         didDrag = true;
     }
     px = e.clientX - offsetX;
     py = e.clientY - offsetY;
-    // 限制在屏幕内
     px = Math.max(0, Math.min(px, window.innerWidth - PET_SIZE));
     py = Math.max(0, Math.min(py, window.innerHeight - PET_SIZE));
     pet.style.left = px + "px";
@@ -3278,12 +3252,10 @@ document.addEventListener("mouseup", () => {
     if (!dragging) return;
     dragging = false;
     if (didDrag) {
-        mode = "fixed"; // 拖到哪里固定在哪里
+        mode = "fixed";
     }
-    // 没有位移则是点击，mode不变，由click事件处理
 });
 
-// 移动端触摸拖拽
 pet.addEventListener("touchstart", (e) => {
     const t = e.touches[0];
     dragging = true;
@@ -3317,14 +3289,12 @@ document.addEventListener("touchend", () => {
     if (didDrag) {
         mode = "fixed";
     } else {
-        // 触摸点击：恢复自由 + 显示特效
         if (mode === "fixed") mode = "free";
         createHearts(px + PET_SIZE / 2, py + PET_SIZE / 2);
         showBubble();
     }
 });
 
-/* ---------- 30秒无操作触发闪现 ---------- */
 setInterval(() => {
     if (mode === "manual") {
         if (Date.now() - lastActionTime > 30000) {
@@ -3333,14 +3303,11 @@ setInterval(() => {
     }
 }, 1000);
 
-/* ---------- 主循环 ---------- */
 setInterval(() => {
     if (mode === "free") freeMove();
     if (mode === "edge") edgeMove();
-    // fixed / flash / manual 模式不自动移动
 }, 50);
 
-/* ---------- 爱心特效 ---------- */
 function createHearts(x, y) {
     for (let i = 0; i < 8; i++) {
         const heart = document.createElement("div");
@@ -3353,7 +3320,6 @@ function createHearts(x, y) {
     }
 }
 
-/* ---------- 气泡 ---------- */
 const sweetWords = [
     "爱你呀 ", "抱抱～ ", "辛苦啦 ", "今天也很棒 ",
     "记得开心哦 ", "么么哒 ", "陪着你呢 ",
@@ -3370,14 +3336,12 @@ function showBubble() {
     setTimeout(() => { bubble.remove(); }, 2500);
 }
 
-/* ---------- 点击其他地方关闭菜单 ---------- */
 document.addEventListener("click", (e) => {
     if (!pet.contains(e.target) && !menu.contains(e.target)) {
         menu.style.display = "none";
     }
 });
 
-/* ---------- 窗口变化 ---------- */
 window.addEventListener("resize", () => {
     const maxX = window.innerWidth - PET_SIZE;
     const maxY = window.innerHeight - PET_SIZE;
@@ -3387,7 +3351,7 @@ window.addEventListener("resize", () => {
     pet.style.top = py + "px";
 });
 
-// ===== 设备唯一标识（一个设备一个头像+昵称） =====
+// ===== 设备唯一标识 =====
 function getDeviceId() {
     let id = localStorage.getItem('ld_device_id');
     if (!id) {
@@ -3398,10 +3362,8 @@ function getDeviceId() {
 }
 const DEVICE_ID = getDeviceId();
 
-// 主默认头像：老数据查不到 device_id 对应资料时，用这张本地图（放在后端 static/mr.jpg）
 const DEFAULT_AVATAR_URL = `./c.jpg`;
 
-// 最终兜底（连 mr.jpg 都加载失败时才会用到，纯前端生成不依赖任何文件）
 const defaultAvatarDataUri = 'data:image/svg+xml;utf8,' + encodeURIComponent(
     '<svg xmlns="http://www.w3.org/2000/svg" width="60" height="60">' +
     '<rect width="60" height="60" rx="30" fill="#ffb6c1"/>' +
@@ -3411,17 +3373,14 @@ const defaultAvatarDataUri = 'data:image/svg+xml;utf8,' + encodeURIComponent(
 
 let myProfile = { nickname: '神秘人', avatar_url: '', wechat_bound: false, wechat_masked: '' };
 let pendingAvatarFile = null;
-// 更新左下角头像和名字
 function updateAvatarUI() {
     const avatarImg = document.getElementById('avatarImg');
     const avatarName = document.getElementById('avatarName');
 
     if (!avatarImg || !avatarName) return;
 
-    // 更新名字
     avatarName.textContent = myProfile.nickname || '神秘人';
 
-    // 更新头像
     let avatarUrl = DEFAULT_AVATAR_URL;
     if (myProfile.avatar_url) {
         avatarUrl = myProfile.avatar_url.startsWith('/')
@@ -3437,7 +3396,6 @@ function updateAvatarUI() {
 }
 async function loadTotalUnreadCount() {
     try {
-        // limit 设大一点，把所有帖子一次性拉回来求和
         const res = await fetch(`${API_BASE}/media?page=1&limit=9999&device_id=${encodeURIComponent(DEVICE_ID)}`);
         const result = await res.json();
         if (result.success && result.data) {
@@ -3466,8 +3424,8 @@ async function loadMyProfile() {
         if (result.success) {
             myProfile.nickname      = result.nickname;
             myProfile.avatar_url    = result.avatar_url;
-            myProfile.wechat_bound  = !!result.wechat_bound;      // 新增
-            myProfile.wechat_masked = result.wechat_masked || ''; // 新增
+            myProfile.wechat_bound  = !!result.wechat_bound;
+            myProfile.wechat_masked = result.wechat_masked || '';
         }
     } catch (e) {
         console.error('加载头像信息失败:', e);
@@ -3481,16 +3439,16 @@ async function loadMyProfile() {
                 await loadZcGifs();
                 updateZcBtn();
             }
-        } catch (e) { /* zc 服务器不可达,静默忽略 */ }
+        } catch (e) { }
         loadTotalUnreadCount();
     }
 }
 
 let currentPage = 1;
-const itemsPerPage = 4; // 修改为4张图片
+const itemsPerPage = 4;
 let currentDetailId = null;
 let mediaData = [];
-let tgBgNaturalRatio = null; // 高/宽 比例
+let tgBgNaturalRatio = null;
 
 function loadTgBackgroundRatio() {
     if (tgBgNaturalRatio !== null) return Promise.resolve(tgBgNaturalRatio);
@@ -3522,7 +3480,6 @@ function checkDetailBgOverflow() {
     if (contentHeight > renderedBgHeight) {
         const overflowAmount = contentHeight - renderedBgHeight;
         const commentsHeight = commentsList.scrollHeight;
-        // ✅ 150 → 300，且不超过评论实际高度
         const newMaxHeight = Math.min(
             Math.max(commentsHeight - overflowAmount, 300),
             commentsHeight
@@ -3537,19 +3494,15 @@ function compressImage(file, quality = 0.6) {
         const ctx = canvas.getContext('2d');
         const img = new Image();
         img.onload = function () {
-            // 设置画布大小
             canvas.width = img.width;
             canvas.height = img.height;
-            // 绘制图片到画布
             ctx.drawImage(img, 0, 0);
-            // 转换为blob，压缩质量为60%
             canvas.toBlob(resolve, 'image/jpeg', quality);
         };
         img.src = URL.createObjectURL(file);
     });
 }
 
-// 新增函数 + 初始化
 const LOVE_START_DATE = new Date('2026-01-06');
 
 function updateLoveDays() {
@@ -3571,7 +3524,6 @@ function updateLoveDays() {
 updateLoveDays();
 setInterval(updateLoveDays, 60000);
 
-// 登录功能
 async function login() {
     const name = document.getElementById('adminName').value.trim();
     const errorMsg = document.getElementById('errorMsg');
@@ -3587,9 +3539,7 @@ async function login() {
         if (result.success) {
             document.getElementById('loginPage').style.display = 'none';
             document.getElementById('mainPage').style.display = 'block';
-            // 删除下面这行（页面没有 currentTime 元素）：
-            // document.getElementById('currentTime').style.display = 'none';
-            await loadMyProfile();  // ← 加载头像信息
+            await loadMyProfile();
             loadMediaData();
         } else {
             errorMsg.style.display = 'block';
@@ -3604,7 +3554,6 @@ async function login() {
     }
 }
 
-// 从后端加载媒体数据
 async function loadMediaData() {
     try {
         document.getElementById('loading').style.display = 'block';
@@ -3627,7 +3576,6 @@ async function loadMediaData() {
     }
 }
 function getBgPositionForId(id) {
-    // 280% 放大下，坐标范围收窄到 20%-80%，避免露出图片边缘空白
     const x = 20 + ((id * 37) % 60);
     const y = 20 + ((id * 53) % 60);
     return `${x}% ${y}%`;
@@ -3639,83 +3587,88 @@ function renderMediaGrid(data) {
     const seenIds = getSeenIds();
 
     data.forEach(item => {
-    const locHtml = (item.location || item.weather)
-        ? `<span class="loc-weather">${item.location ? '📍' + escapeHtml(item.location) : ''}${item.weather ? ' <span class="wx">' + escapeHtml(item.weather) + '</span>' : ''}</span>`
-        : '';
+
+        // ===== 位置天气：可点击打开地图（卡片上） =====
+        const hasGeoCard = item.lat && item.lng;
+        const locHtml = (item.location || item.weather)
+            ? `<span class="loc-weather"${
+                hasGeoCard ? ` data-geo-id="${item.id}" style="cursor:pointer;text-decoration:underline dotted"` : ''
+              }>${
+                item.location ? '📍' + escapeHtml(item.location) : ''
+              }${
+                item.weather ? ' <span class="wx">' + escapeHtml(item.weather) + '</span>' : ''
+              }</span>`
+            : '';
 
         const mediaItem = document.createElement('div');
-const unreadForCard = item.unread_count || 0;
-mediaItem.className = 'media-item' + (unreadForCard > 0 ? ' has-unread' : '');
+        const unreadForCard = item.unread_count || 0;
+        mediaItem.className = 'media-item' + (unreadForCard > 0 ? ' has-unread' : '');
         mediaItem.style.position = 'relative';
         mediaItem.onclick = () => showDetail(item.id);
         mediaItem.style.backgroundPosition = getBgPositionForId(item.id);
 
-        // 媒体内容
         let mediaHtml = '';
-const images = item.images || [{ url: item.url, type: item.type }];
+        const images = item.images || [{ url: item.url, type: item.type }];
 
-if (images.length > 1) {
-    const slides = images.map((img) => {
-        if (img.type === 'video') {
-            const poster = item.thumbnail ? API_BASE + item.thumbnail : '';
-            return `<div class="swipe-slide" style="min-width:100%;position:relative;">
-                <video class="media-preview" muted poster="${poster}" style="pointer-events:none;">
-                    <source src="${API_BASE}${img.url}">
-                </video>
-                <div class="play-icon">▶</div>
-            </div>`;
+        if (images.length > 1) {
+            const slides = images.map((img) => {
+                if (img.type === 'video') {
+                    const poster = item.thumbnail ? API_BASE + item.thumbnail : '';
+                    return `<div class="swipe-slide" style="min-width:100%;position:relative;">
+                        <video class="media-preview" muted poster="${poster}" style="pointer-events:none;">
+                            <source src="${API_BASE}${img.url}">
+                        </video>
+                        <div class="play-icon">▶</div>
+                    </div>`;
+                }
+                return `<div class="swipe-slide" style="min-width:100%;">
+                    <img class="media-preview" src="${API_BASE}${img.url}" loading="lazy">
+                </div>`;
+            }).join('');
+
+            const dots = images.map((_, i) =>
+                `<span class="swipe-dot${i === 0 ? ' active' : ''}"></span>`
+            ).join('');
+
+            mediaHtml = `
+                <div class="swipe-wrap" data-idx="0">
+                    <div class="swipe-track" style="display:flex;transition:transform .25s ease;">
+                        ${slides}
+                    </div>
+                    <div class="swipe-dots">${dots}</div>
+                    <div class="swipe-count">${images.length}张</div>
+                </div>`;
+        } else {
+            if (item.type === 'video') {
+                const posterUrl = item.thumbnail ? API_BASE + item.thumbnail : './appIcon.png';
+                mediaHtml = `<div class="video-thumbnail" style="position:relative">
+                    <video class="media-preview" muted poster="${posterUrl}">
+                        <source src="${API_BASE}${item.url}" type="video/mp4">
+                    </video>
+                    <div class="play-icon">▶</div>
+                </div>`;
+            } else {
+                mediaHtml = `<img class="media-preview" src="${API_BASE}${item.url}" alt="图片" loading="lazy">`;
+            }
         }
-        return `<div class="swipe-slide" style="min-width:100%;">
-            <img class="media-preview" src="${API_BASE}${img.url}" loading="lazy">
-        </div>`;
-    }).join('');
-
-    const dots = images.map((_, i) =>
-        `<span class="swipe-dot${i === 0 ? ' active' : ''}"></span>`
-    ).join('');
-
-    mediaHtml = `
-        <div class="swipe-wrap" data-idx="0">
-            <div class="swipe-track" style="display:flex;transition:transform .25s ease;">
-                ${slides}
-            </div>
-            <div class="swipe-dots">${dots}</div>
-            <div class="swipe-count">${images.length}张</div>
-        </div>`;
-} else {
-    if (item.type === 'video') {
-        const posterUrl = item.thumbnail ? API_BASE + item.thumbnail : './appIcon.png';
-        mediaHtml = `<div class="video-thumbnail" style="position:relative">
-            <video class="media-preview" muted poster="${posterUrl}">
-                <source src="${API_BASE}${item.url}" type="video/mp4">
-            </video>
-            <div class="play-icon">▶</div>
-        </div>`;
-    } else {
-        mediaHtml = `<img class="media-preview" src="${API_BASE}${item.url}" alt="图片" loading="lazy">`;
-    }
-}
 
         const uploaderAvatarSrc = item.uploader_avatar
             ? (API_BASE + item.uploader_avatar)
             : DEFAULT_AVATAR_URL;
 
-        // NEW 标签：本设备从未查看过
         const isNew = !seenIds.has(String(item.id));
         const newBadgeHtml = isNew ? `<div class="new-badge">NEW</div>` : '';
 
-        // 未读评论红圈：后端返回的 unread_count
         const unread = item.unread_count || 0;
         const unreadDotHtml = unread > 0
             ? `<div class="unread-dot">${unread > 99 ? '99+' : unread}</div>`
             : '';
 
-        // 只有至少一个角标时才渲染包裹层
         const badgeWrapHtml = (isNew || unread > 0)
             ? `<div class="card-badge-wrap">${newBadgeHtml}${unreadDotHtml}</div>`
             : '';
 
-                mediaItem.innerHTML = `
+        mediaItem.innerHTML = `
             <div class="uploader-badge">
                 <img class="uploader-avatar"
                      src="${uploaderAvatarSrc}"
@@ -3728,35 +3681,44 @@ if (images.length > 1) {
             </div>
             <div class="media-info">
                 <p class="media-description">${item.description}</p>
-                <p class="media-date">${item.date}${locHtml ? ' · ' + locHtml : ''}</p>
+                <p class="media-date">${item.date}</p>
             </div>`;
         grid.appendChild(mediaItem);
-        // 给每个轮播绑定触摸滑动
-grid.querySelectorAll('.swipe-wrap').forEach(wrap => {
-    const track = wrap.querySelector('.swipe-track');
-    const dots = wrap.querySelectorAll('.swipe-dot');
-    const total = dots.length;
-    let startX = 0, idx = 0;
 
-    wrap.addEventListener('touchstart', e => {
-        startX = e.touches[0].clientX;
-        e.stopPropagation(); // 不触发外层翻页
-    }, { passive: true });
+        grid.querySelectorAll('.swipe-wrap').forEach(wrap => {
+            const track = wrap.querySelector('.swipe-track');
+            const dots = wrap.querySelectorAll('.swipe-dot');
+            const total = dots.length;
+            let startX = 0, idx = 0;
 
-    wrap.addEventListener('touchend', e => {
-        const dx = e.changedTouches[0].clientX - startX;
-        if (Math.abs(dx) < 30) return;
-        e.stopPropagation();
-        idx = dx < 0 ? Math.min(idx + 1, total - 1) : Math.max(idx - 1, 0);
-        track.style.transform = `translateX(-${idx * 100}%)`;
-        dots.forEach((d, i) => d.classList.toggle('active', i === idx));
-    }, { passive: true });
-});
+            wrap.addEventListener('touchstart', e => {
+                startX = e.touches[0].clientX;
+                e.stopPropagation();
+            }, { passive: true });
+
+            wrap.addEventListener('touchend', e => {
+                const dx = e.changedTouches[0].clientX - startX;
+                if (Math.abs(dx) < 30) return;
+                e.stopPropagation();
+                idx = dx < 0 ? Math.min(idx + 1, total - 1) : Math.max(idx - 1, 0);
+                track.style.transform = `translateX(-${idx * 100}%)`;
+                dots.forEach((d, i) => d.classList.toggle('active', i === idx));
+            }, { passive: true });
+        });
+    });
+
+    // 卡片地址点击 → 打开地图
+    grid.querySelectorAll('.loc-weather[data-geo-id]').forEach(el => {
+        el.addEventListener('click', ev => {
+            ev.stopPropagation();
+            const id = el.dataset.geoId;
+            const target = mediaData.find(m => String(m.id) === String(id));
+            if (target) openPostMap(target);
+        });
     });
 
     document.getElementById('mediaGrid').style.display = 'grid';
 }
-// 更新分页
 function updatePagination(totalPages, currentPageNum) {
     currentPage = currentPageNum;
     document.getElementById('pageInfo').textContent = `${currentPage} / ${totalPages}`;
@@ -3779,7 +3741,6 @@ function updatePagination(totalPages, currentPageNum) {
     document.getElementById('pagination').style.display = 'flex';
 }
 
-// 分页功能
 function previousPage() {
     if (currentPage > 1) {
         currentPage--;
@@ -3804,7 +3765,6 @@ function nextPage() {
     }
 }
 
-// 显示上传模态框
 let multiSelectOn = false;
 let currentGroupId = null;
 let groupFileCount = 0;
@@ -3841,8 +3801,6 @@ function hideUploadModal() {
     document.getElementById('fileInput').value = '';
     document.getElementById('filePreviewContainer').innerHTML = '';
     document.getElementById('descriptionInput').value = '';
-    // 不在这里重置 multiSelectOn / currentGroupId
-    // 用户随时可能只是想"先关掉弹窗，等会儿继续传同一组"
 }
 
 function previewFile() {
@@ -3874,10 +3832,9 @@ async function uploadFile() {
         return;
     }
 
-    // ✅ 关键：先在外面等一次定位结果
     const loc = await getCurrentLocation();
 
-    const doUpload = (fileToSend) => {          // 现在它是纯同步函数
+    const doUpload = (fileToSend) => {
         const formData = new FormData();
         if (loc) {
             formData.append('lat', loc.lat);
@@ -3940,7 +3897,6 @@ async function uploadFile() {
     }
 }
 
-/* ===== 左下角头像持续冒小星星 ===== */
 const starEmojis = ['⭐', '✨', '🌟'];
 
 function spawnAvatarStar() {
@@ -3952,13 +3908,11 @@ function spawnAvatarStar() {
     star.className = 'avatar-star';
     star.textContent = starEmojis[Math.floor(Math.random() * starEmojis.length)];
 
-    // 从头像边缘随机一个起点
     const startX = rect.left + rect.width / 2 + (Math.random() - 0.5) * rect.width * 0.8;
     const startY = rect.top + (Math.random() - 0.5) * rect.height * 0.6;
     star.style.left = startX + 'px';
     star.style.top = startY + 'px';
 
-    // 随机飘散方向（向上、左右轻微偏移）
     const sx = (Math.random() - 0.5) * 60;
     const sy = -40 - Math.random() * 50;
     star.style.setProperty('--sx', sx + 'px');
@@ -3970,13 +3924,11 @@ function spawnAvatarStar() {
 }
 function startAvatarStarLoop() {
     setInterval(() => {
-        // 每次触发生成 3~5 颗星星，制造更热闹的效果
-        const count = 3 + Math.floor(Math.random() * 3); // 3,4,5
+        const count = 3 + Math.floor(Math.random() * 3);
         for (let i = 0; i < count; i++) {
-            // 稍微错开时间，避免完全叠在一起显得生硬
             setTimeout(() => spawnAvatarStar(), i * 80);
         }
-    }, 500); // 间隔从700缩短到500，整体更密集
+    }, 500);
 }
 function showUploadProgress() {
     updateUploadProgress(0);
@@ -3992,8 +3944,17 @@ function updateUploadProgress(percent) {
         percent >= 100 ? '处理中，请稍候…' : '正在上传...';
 }
 
-// 显示详情页面（支持视频）
+// 显示详情页面
+let detailRequestSeq = 0;
+
 async function showDetail(id) {
+    const seq = ++detailRequestSeq;
+
+    // ★ 先清空旧帖子的评论和计数，避免切换时残留
+    document.getElementById('commentsList').innerHTML = '';
+    document.getElementById('commentCount').textContent = '0';
+    document.getElementById('unreadBadge').style.display = 'none';
+
     markSeen(id);
     document.querySelectorAll('.media-item').forEach(el => {
         const fn = el.getAttribute('onclick') || '';
@@ -4004,6 +3965,10 @@ async function showDetail(id) {
     try {
         const response = await fetch(`${API_BASE}/media/${id}?device_id=${encodeURIComponent(DEVICE_ID)}`);
         const result = await response.json();
+
+        // ★ 如果期间用户点了别的帖子，丢弃这次响应
+        if (seq !== detailRequestSeq) return;
+
         if (result.success) {
             const item = result.data;
             currentDetailId = id;
@@ -4020,34 +3985,52 @@ async function showDetail(id) {
                 `;
             }
             document.getElementById('detailDescription').textContent = item.description;
+
+            // ===== 位置天气：可点击打开地图 =====
+            const hasGeo = item.lat && item.lng;
             const locHtml = (item.location || item.weather)
-                ? `<span class="loc-weather">${item.location ? '📍' + escapeHtml(item.location) : ''}${item.weather ? ' <span class="wx">' + escapeHtml(item.weather) + '</span>' : ''}</span>`
+                ? `<span class="loc-weather" ${hasGeo ? 'id="detailLocWeather" style="cursor:pointer;text-decoration:underline dotted"' : ''}>${
+                    item.location ? '📍' + escapeHtml(item.location) : ''
+                  }${
+                    item.weather ? ' <span class="wx">' + escapeHtml(item.weather) + '</span>' : ''
+                  }</span>`
                 : '';
             document.getElementById('detailDate').innerHTML =
                 `${item.date}${locHtml ? ' · ' + locHtml : ''}`;
+
+            const locEl = document.getElementById('detailLocWeather');
+            if (locEl) {
+                locEl.onclick = () => openPostMap(item);
+            }
+            // ===================================
+
             document.getElementById('likeCount').textContent = item.likes;
             currentLiked = !!item.is_liked;
             updateLikeBtnUI();
             document.getElementById('commentCount').textContent = item.comments.length;
             renderComments(item.comments);
             await loadTgBackgroundRatio();
-        checkDetailBgOverflow();
+
+            // ★ 二次校验，防止 await 期间又切了帖子
+            if (seq !== detailRequestSeq) return;
+
+            checkDetailBgOverflow();
             loadVisitors(id);
             document.getElementById('detailPage').style.display = 'block';
 
             fetch(`${API_BASE}/media/${id}/read`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ device_id: DEVICE_ID })
-}).then(() => loadTotalUnreadCount())   // ← 加这一行
-  .catch(() => {});
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ device_id: DEVICE_ID })
+            }).then(() => loadTotalUnreadCount())
+              .catch(() => {});
         }
     } catch (error) {
         console.error('加载详情错误:', error);
-        alert('加载详情失败');
+        // ★ 只有当前请求还生效时才提示，避免切帖后弹旧错误
+        if (seq === detailRequestSeq) alert('加载详情失败');
     }
 }
-// 渲染详情页媒体（单图/多图轮播/视频）
 function renderDetailMedia(item) {
     const wrapper = document.getElementById('detailMediaWrapper');
     const images = item.images && item.images.length > 1
@@ -4071,7 +4054,6 @@ function renderDetailMedia(item) {
         return;
     }
 
-    // 多文件轮播
     const slides = images.map((img, i) => {
         if (img.type === 'video') {
             return `<div class="detail-slide" style="width:100%;flex:0 0 100%;box-sizing:border-box;">
@@ -4098,7 +4080,6 @@ function renderDetailMedia(item) {
                 ${slides}
             </div>
 
-            <!-- 左右箭头 -->
             <button onclick="detailSlide(-1)" style="
                 position:absolute;left:10px;top:50%;transform:translateY(-50%);
                 background:rgba(0,0,0,0.4);border:none;color:white;
@@ -4112,7 +4093,6 @@ function renderDetailMedia(item) {
                 cursor:pointer;display:flex;align-items:center;justify-content:center;
                 z-index:10;">›</button>
 
-            <!-- 计数器 -->
             <div id="detailCounter" style="
                 position:absolute;top:10px;right:12px;
                 background:rgba(0,0,0,0.45);color:white;
@@ -4120,7 +4100,6 @@ function renderDetailMedia(item) {
                 1 / ${images.length}
             </div>
 
-            <!-- 点指示器 -->
             <div style="position:absolute;bottom:10px;left:50%;transform:translateX(-50%);
                         display:flex;gap:5px;" id="detailDots">${dots}</div>
         </div>`;
@@ -4128,7 +4107,6 @@ function renderDetailMedia(item) {
     detailSlideIdx = 0;
     detailSlideTotal = images.length;
 
-    // 绑定触摸滑动
     const track = wrapper.querySelector('#detailTrack');
     let startX = 0;
     track.parentElement.addEventListener('touchstart', e => {
@@ -4155,7 +4133,6 @@ function detailSlide(dir) {
     dots.forEach((d, i) => d.classList.toggle('active', i === detailSlideIdx));
     if (counter) counter.textContent = `${detailSlideIdx + 1} / ${detailSlideTotal}`;
 }
-// 全屏显示图片
 function showFullscreen(src) {
     const modal = document.createElement('div');
     modal.className = 'fullscreen-modal';
@@ -4165,7 +4142,6 @@ function showFullscreen(src) {
         <img class="fullscreen-image" src="${src}" alt="全屏图片">
     `;
     document.body.appendChild(modal);
-    // 点击关闭
     modal.onclick = () => {
         document.body.removeChild(modal);
     };
@@ -4210,7 +4186,6 @@ async function loadVisitors(mediaId) {
         const avWrap = document.getElementById('vtAvatars');
         const list = document.getElementById('vtList');
 
-        // 头像堆叠（最多显示4个）
         avWrap.innerHTML = '';
         visitors.slice(0, 4).forEach(v => {
             const el = document.createElement('div');
@@ -4233,12 +4208,10 @@ async function loadVisitors(mediaId) {
             avWrap.appendChild(more);
         }
 
-        // 摘要行
         document.getElementById('vtCountLabel').textContent = `${visitors.length} 人来过`;
         document.getElementById('vtLatestLine').textContent =
             `${visitors[0].nickname} ${vtRelTime(visitors[0].last_visit)}`;
 
-        // 展开列表
         list.innerHTML = '';
         visitors.forEach(v => {
     const row = document.createElement('div');
@@ -4289,11 +4262,11 @@ async function loadVisitors(mediaId) {
 }
 // 隐藏详情页面
 function hideDetail() {
+    closeMapFrame();                 // ← 关闭地图 iframe
     document.getElementById('visitorCard').style.display = 'none';
     vtOpen = false;
     document.getElementById('detailPage').style.display = 'none';
 
-    // 停止所有正在播放的视频
     const wrapper = document.getElementById('detailMediaWrapper');
     if (wrapper) {
         wrapper.querySelectorAll('video').forEach(v => {
@@ -4308,7 +4281,6 @@ function hideDetail() {
     detailSlideIdx = 0;
 }
 
-// 切换点赞
 let currentLiked = false;
 
 async function toggleLike() {
@@ -4461,26 +4433,21 @@ async function addComment() {
             return;
         }
 
-        // 清空输入区
         input.value = '';
         clearPendingSticker();
         clearPendingVoice();
         cancelReply();
 
-        // 1. 先更新评论计数（这个一定是准的）
         if (result.total_comments != null) {
             document.getElementById('commentCount').textContent = result.total_comments;
         }
 
-        // 2. 优先拿完整数据渲染
         let finalComments = null;
 
-        // 2a. POST 返回里有非空 comments 就用它
         if (Array.isArray(result.comments) && result.comments.length > 0) {
             finalComments = result.comments;
         }
 
-        // 2b. 无论如何再拉一次详情（POST 返回常常不完整）
         try {
             const detailRes = await fetch(
                 `${API_BASE}/media/${currentDetailId}?device_id=${encodeURIComponent(DEVICE_ID)}`
@@ -4495,16 +4462,13 @@ async function addComment() {
             console.warn('重新拉取详情失败，保留原评论列表', e);
         }
 
-        // 3. ✅ 关键修复：只有拿到有效数据才重渲染，否则完全不动 DOM
         if (finalComments && finalComments.length > 0) {
             renderComments(finalComments);
             document.getElementById('commentCount').textContent = finalComments.length;
         } else {
-            // 拿到空数据时，不调用 renderComments，保留现有评论区
             console.warn('未获取到完整评论数据，保留现有列表');
         }
 
-        // 4. ✅ 只滚内部列表，绝不用 scrollIntoView 滚整个详情页
         setTimeout(() => {
             const list = document.getElementById('commentsList');
             if (list) list.scrollTop = 0;
@@ -4520,7 +4484,7 @@ async function addComment() {
 }
 let pendingStickerUrl = null;
 let stickerCache = [];
-let pendingReplyTo = null; // { id, name }
+let pendingReplyTo = null;
 
 function replyToComment(commentId, authorName) {
     pendingReplyTo = { id: commentId, name: authorName || '神秘人' };
@@ -4546,7 +4510,6 @@ async function showStickerPicker() {
 
 function hideStickerPicker() {
     document.getElementById('stickerModal').classList.remove('show');
-    // 关闭时退出管理模式
     if (stickerManageMode) {
         stickerManageMode = false;
         const btn = document.getElementById('stickerManageBtn');
@@ -4605,7 +4568,6 @@ function renderStickerGrid() {
         inner.innerHTML = `<img src="${API_BASE}${s.url}" loading="lazy">`;
 
         if (stickerManageMode) {
-            // 管理模式：显示 ✕ 删除按钮，整体可点击删除
             const delBtn = document.createElement('div');
             delBtn.style.cssText = `
                 position:absolute;top:-6px;right:-6px;
@@ -4626,14 +4588,12 @@ function renderStickerGrid() {
             });
             inner.style.border = '2px solid #ffb6c1';
             inner.appendChild(delBtn);
-            // 管理模式不触发选择
             inner.addEventListener('click', () => {
                 if (confirm('删除这个表情包吗？')) {
                     deleteSticker(s.id, item);
                 }
             });
         } else {
-            // 正常模式：点击选择，长按删除
             inner.addEventListener('click', () => selectSticker(s.url));
 
             let pressTimer = null;
@@ -4739,7 +4699,7 @@ function buildCommentHtml(comment, isReply, rootId) {
             <span class="comment-sticker-collect-hint">+</span>
            </div>`
         : '';
-    // ← 语音条
+
     const voiceHtml = comment.voice_url
         ? `<div class="voice-row" data-voice-url="${API_BASE}${comment.voice_url}">
             <span class="vr-play">▶</span>
@@ -4748,7 +4708,6 @@ function buildCommentHtml(comment, isReply, rootId) {
            </div>`
         : '';
 
-    // ← 新增:位置天气
     const locHtml = (comment.location || comment.weather)
         ? `<span class="loc-weather">${comment.location ? '📍' + escapeHtml(comment.location) : ''}${comment.weather ? ' <span class="wx">' + escapeHtml(comment.weather) + '</span>' : ''}</span>`
         : '';
@@ -4812,15 +4771,19 @@ function scrollToFirstUnread() {
     }
 }
 function renderComments(comments) {
-    // ✅ 空数组直接 return，不清空已有 DOM
+    const list = document.getElementById('commentsList');
+
+    // ★ 空数据时直接清空，避免残留上一个帖子的评论
     if (!Array.isArray(comments) || comments.length === 0) {
-        console.warn('renderComments 收到空数据，保留原列表');
+        list.innerHTML = '';
+        updateUnreadBadge([]);
+        checkDetailBgOverflow();
         return;
     }
+
     updateUnreadBadge(comments);
-    const list = document.getElementById('commentsList');
     list.innerHTML = '';
-    // 按 parent_id 分组：顶层评论 + 每个顶层评论的回复列表
+
     const topLevel = comments.filter(c => !c.parent_id);
     const repliesByParent = {};
     comments.filter(c => c.parent_id).forEach(c => {
@@ -4828,16 +4791,15 @@ function renderComments(comments) {
         repliesByParent[c.parent_id].push(c);
     });
 
-    // 顶层评论倒序展示（最新的在最上面），回复保持正序（按发表顺序）
     const topLevelSorted = [...topLevel].reverse();
 
     topLevelSorted.forEach(comment => {
-       const commentItem = document.createElement('div');
+        const commentItem = document.createElement('div');
         commentItem.className = 'comment-item' + (comment.is_unread ? ' is-unread' : '');
         commentItem.dataset.commentId = comment.id;
         commentItem.innerHTML = buildCommentHtml(comment, false, comment.id);
 
-       const replies = repliesByParent[comment.id] || [];
+        const replies = repliesByParent[comment.id] || [];
         if (replies.length > 0) {
             const repliesWrap = document.createElement('div');
             repliesWrap.className = 'comment-replies';
@@ -4847,10 +4809,10 @@ function renderComments(comments) {
                 replyItem.dataset.commentId = reply.id;
                 replyItem.innerHTML = buildCommentHtml(reply, true, comment.id);
                 repliesWrap.appendChild(replyItem);
-            }); repliesWrap.classList.add('collapsed');
+            });
+            repliesWrap.classList.add('collapsed');
             commentItem.appendChild(repliesWrap);
 
-            // 收起/展开按钮
             const toggleBtn = document.createElement('button');
             toggleBtn.className = 'replies-toggle-btn';
             toggleBtn.innerHTML = `<span class="replies-toggle-icon open">▾</span><span class="replies-toggle-text">收起 ${replies.length} 条回复</span>`;
@@ -4865,19 +4827,18 @@ function renderComments(comments) {
         }
 
         list.appendChild(commentItem);
-});
-    // 绑定表情包收藏
+    });
+
     list.querySelectorAll('.comment-sticker-wrap').forEach(wrap => {
         wrap.addEventListener('click', () => {
             collectStickerFromComment(wrap.dataset.stickerUrl, wrap);
         });
     });
-    // 绑定语音条播放
+
     list.querySelectorAll('.voice-row').forEach(row => {
         row.addEventListener('click', () => {
             const url = row.dataset.voiceUrl;
 
-            // 停掉其它正在播放的
             document.querySelectorAll('.voice-row.playing').forEach(r => {
                 if (r !== row) {
                     r.classList.remove('playing');
@@ -4886,7 +4847,6 @@ function renderComments(comments) {
                 }
             });
 
-            // 自己正在播 → 暂停
             if (row._audio && !row._audio.paused) {
                 row._audio.pause();
                 row._audio.currentTime = 0;
@@ -4907,7 +4867,7 @@ function renderComments(comments) {
             row.querySelector('.vr-play').textContent = '⏸';
         });
     });
-    // 绑定回复按钮
+
     list.querySelectorAll('.comment-reply-btn').forEach(btn => {
         btn.addEventListener('click', () => {
             replyToComment(btn.dataset.commentId, btn.dataset.authorName);
@@ -4939,7 +4899,6 @@ async function deleteComment(commentId, btnEl) {
         btnEl.disabled = false;
     }
 }
-// 收藏评论里别人用过的表情包
 async function collectStickerFromComment(stickerUrl, triggerEl) {
     if (!stickerUrl) return;
     try {
@@ -4979,35 +4938,31 @@ function showStickerToast(message) {
     stickerToastTimer = setTimeout(() => toast.classList.remove('show'), 1800);
 }
 
-// 显示错误信息
 function showError(message) {
     const grid = document.getElementById('mediaGrid');
     grid.innerHTML = `<div class="error">${message}</div>`;
     grid.style.display = 'block';
 }
 
-// 支持回车键登录和评论
 document.getElementById('commentInput').addEventListener('keypress', function (e) {
     if (e.key === 'Enter') {
         addComment();
     }
 });
 
-// 执行搜索
 async function performSearch() {
     const query = document.getElementById('searchInput').value.trim();
-    // 🔍 新增功能：判断搜索关键词是否为“摄像头”
     if (query === '摄像头') {
         window.location.href = './love.html';
-        return; // 执行跳转后直接退出函数，不再执行后续搜索逻辑
+        return;
     }
     if (query === '看视频') {
         window.location.href = './hsa.html';
-        return; // 执行跳转后直接退出函数，不再执行后续搜索逻辑
+        return;
     }
     if (query === '宝宝') {
         window.location.href = 'http://43.167.237.62:7800';
-        return; // 执行跳转后直接退出函数，不再执行后续搜索逻辑
+        return;
     }
     if (!query) {
         window.location.href = "./admin.html";
@@ -5018,14 +4973,14 @@ async function performSearch() {
         document.getElementById('loading').style.display = 'block';
         document.getElementById('mediaGrid').style.display = 'none';
         document.getElementById('pagination').style.display = 'none';
-        const response = await fetch(`${API_BASE}/search?q=${encodeURIComponent(query)}&page=${currentPage}&limit=${itemsPerPage}`);
+        const response = await fetch(`${API_BASE}/search?q=${encodeURIComponent(query)}&page=${currentPage}&limit=${itemsPerPage}&device_id=${encodeURIComponent(DEVICE_ID)}`);
         const result = await response.json();
         if (result.success) {
             isSearchMode = true;
             searchQuery = query;
-            // 显示清除搜索按钮
             document.getElementById('clearSearchBtn').style.display = 'block';
             if (result.data.length > 0) {
+                mediaData = result.data;
                 renderMediaGrid(result.data);
                 updatePagination(result.total_pages, result.current_page);
                 showSearchInfo(`找到 ${result.total} 条相关记录`);
@@ -5043,7 +4998,6 @@ async function performSearch() {
     }
 }
 
-// 桌宠菜单功能实现
 function hidePetMenu() {
     menu.style.display = "none";
 }
@@ -5110,7 +5064,6 @@ async function showAvatarModal() {
         circle.innerHTML = '📷';
     }
 
-    // ↓↓↓ 新增:根据绑定状态刷新密钥输入框 ↓↓↓
     const keyInput = document.getElementById('wechatKeyInput');
     const keyHint  = document.getElementById('wechatKeyHint');
     keyInput.value = '';
@@ -5121,12 +5074,10 @@ async function showAvatarModal() {
         keyInput.placeholder = '微信通知密钥(可选)';
         keyHint.textContent = '在 sct.ftqq.com 微信扫码获取 SendKey,并关注"方糖"公众号';
     }
-    // ↑↑↑ 新增结束 ↑↑↑
 
     pendingAvatarFile = null;
 }
 
-// 返回 true 表示用户已经选了已有身份并完成了绑定
 async function tryPickExistingProfile() {
     try {
         const res = await fetch(`${API_BASE}/profiles?exclude=${DEVICE_ID}`);
@@ -5190,7 +5141,6 @@ async function saveProfile() {
         formData.append('avatar', pendingAvatarFile);
     }
 
-    // 新增:有输入才提交,留空表示不修改
     const wechatKey = document.getElementById('wechatKeyInput').value.trim();
     if (wechatKey) {
         formData.append('wechat_key', wechatKey);
@@ -5205,8 +5155,8 @@ async function saveProfile() {
         if (result.success) {
             myProfile.nickname      = result.nickname;
             myProfile.avatar_url    = result.avatar_url;
-            myProfile.wechat_bound  = !!result.wechat_bound;      // 新增
-            myProfile.wechat_masked = result.wechat_masked || ''; // 新增
+            myProfile.wechat_bound  = !!result.wechat_bound;
+            myProfile.wechat_masked = result.wechat_masked || '';
 
             if (wechatKey === '解绑') {
                 showStickerToast('已取消微信通知');
@@ -5222,7 +5172,6 @@ async function saveProfile() {
             }
         } else {
             alert('保存失败:' + result.message);
-
         }
     } catch (error) {
         console.error('保存头像错误:', error);
@@ -5230,29 +5179,20 @@ async function saveProfile() {
     }
 }
 
-// 注意：如果你的背景只有视频，上面代码足够。
-// 如果想同时支持背景颜色或图片，可以另写一套逻辑（例如修改 body 的 background-image，并隐藏视频）。
-// 如果需要随机切换而不是顺序切换，也可以改成随机选择。
-
-// 清除搜索
 function clearSearch() {
     isSearchMode = false;
     searchQuery = '';
     currentPage = 1;
     document.getElementById('searchInput').value = '';
     document.getElementById('clearSearchBtn').style.display = 'none';
-    // 移除搜索结果信息
     const searchInfo = document.querySelector('.search-results-info');
     if (searchInfo) {
         searchInfo.remove();
     }
-    // 重新加载所有数据
     loadMediaData();
 }
 
-// 显示搜索结果信息
 function showSearchInfo(message) {
-    // 先移除已存在的搜索信息
     const existingInfo = document.querySelector('.search-results-info');
     if (existingInfo) {
         existingInfo.remove();
@@ -5264,7 +5204,6 @@ function showSearchInfo(message) {
     content.insertBefore(info, content.firstChild);
 }
 
-// 显示无结果页面
 function showNoResults() {
     const grid = document.getElementById('mediaGrid');
     grid.innerHTML = `
@@ -5277,7 +5216,6 @@ function showNoResults() {
     grid.style.display = 'block';
 }
 
-// 搜索模式下的分页
 async function performSearchWithPage() {
     try {
         document.getElementById('loading').style.display = 'block';
@@ -5285,6 +5223,7 @@ async function performSearchWithPage() {
         const response = await fetch(`${API_BASE}/search?q=${encodeURIComponent(searchQuery)}&page=${currentPage}&limit=${itemsPerPage}&device_id=${encodeURIComponent(DEVICE_ID)}`);
         const result = await response.json();
         if (result.success) {
+            mediaData = result.data;
             renderMediaGrid(result.data);
             updatePagination(result.total_pages, result.current_page);
         }
@@ -5296,15 +5235,12 @@ async function performSearchWithPage() {
     }
 }
 
-// 添加触摸事件监听器
 function initSwipeListeners() {
-    // 主页面滑动（左右翻页）
     const mainPage = document.getElementById('mainPage');
     if (mainPage) {
         mainPage.addEventListener('touchstart', handleTouchStart, { passive: false });
         mainPage.addEventListener('touchend', handleTouchEnd, { passive: false });
     }
-    // 详情页面滑动（向左退出）
     const detailPage = document.getElementById('detailPage');
     if (detailPage) {
         detailPage.addEventListener('touchstart', handleDetailTouchStart, { passive: false });
@@ -5312,45 +5248,37 @@ function initSwipeListeners() {
     }
 }
 
-// 主页面触摸开始
 function handleTouchStart(e) {
     touchStartX = e.changedTouches[0].screenX;
     touchStartY = e.changedTouches[0].screenY;
 }
 
-// 主页面触摸结束
 function handleTouchEnd(e) {
     touchEndX = e.changedTouches[0].screenX;
     touchEndY = e.changedTouches[0].screenY;
     handleMainPageSwipe();
 }
 
-// 详情页面触摸开始
 function handleDetailTouchStart(e) {
     touchStartX = e.changedTouches[0].screenX;
     touchStartY = e.changedTouches[0].screenY;
 }
 
-// 详情页面触摸结束
 function handleDetailTouchEnd(e) {
     touchEndX = e.changedTouches[0].screenX;
     touchEndY = e.changedTouches[0].screenY;
     handleDetailPageSwipe();
 }
 
-// 处理主页面滑动
 function handleMainPageSwipe() {
     const deltaX = touchEndX - touchStartX;
     const deltaY = touchEndY - touchStartY;
-    // 确保是水平滑动（水平距离大于垂直距离）
     if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > minSwipeDistance) {
         if (deltaX > 0) {
-            // 向右滑动 - 上一页
             if (currentPage > 1) {
                 previousPage();
             }
         } else {
-            // 向左滑动 - 下一页
             const pageInfo = document.getElementById('pageInfo').textContent;
             const totalPages = parseInt(pageInfo.split(' / ')[1]);
             if (currentPage < totalPages) {
@@ -5360,20 +5288,16 @@ function handleMainPageSwipe() {
     }
 }
 
-// 处理详情页面滑动
 function handleDetailPageSwipe() {
     const deltaX = touchEndX - touchStartX;
     const deltaY = touchEndY - touchStartY;
-    // 确保是水平滑动（水平距离大于垂直距离）
     if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > minSwipeDistance) {
         if (deltaX > 0) {
-            // 向右滑动 - 退出详情页面
             hideDetail();
         }
     }
 }
 
-// 带滑动功能的登录函数
 async function loginWithSwipe() {
     const name = "陆";
     const errorMsg = document.getElementById('errorMsg');
@@ -5390,7 +5314,7 @@ async function loginWithSwipe() {
             document.getElementById('loginPage').style.display = 'none';
             document.getElementById('mainPage').style.display = 'block';
             initSwipeListeners();
-            await loadMyProfile();  // ← 加载头像信息
+            await loadMyProfile();
             loadMediaData();
         } else {
             errorMsg.style.display = 'block';
@@ -5404,27 +5328,23 @@ async function loginWithSwipe() {
         errorMsg.style.display = 'block';
     }
 }
-/* ===== 主页头部标题逐字跳动 ===== */
 function initHeaderTitleBounce() {
     const el = document.getElementById('v8');
     if (!el) return;
-    const text = el.textContent; // "MuMu and DaZi"
+    const text = el.textContent;
     el.innerHTML = text.split('').map((ch, i) => {
         const displayCh = ch === ' ' ? '&nbsp;' : ch;
         return `<span class="header-title-letter" style="animation-delay:${i * 0.08}s">${displayCh}</span>`;
     }).join('');
 }
-// 页面加载完成后的初始化
 document.addEventListener('DOMContentLoaded', function () {
-    setupVoiceLongPress();        // ← 新增:长按输入框录音
-    requestMobilePermissions();   // ← 新增:APK 里申请权限(浏览器无害)
-    // 初始化滑动监听器
+    setupVoiceLongPress();
+    requestMobilePermissions();
     initHeaderTitleBounce();
     initSwipeListeners();
     startAvatarStarLoop();
     loadTgBackgroundRatio();
     loadMyProfile();
-    // 添加回车键搜索支持
     const searchInput = document.getElementById('searchInput');
     if (searchInput) {
         searchInput.addEventListener('keypress', function (e) {
@@ -5434,7 +5354,6 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    // 添加回车键评论支持
     const commentInput = document.getElementById('commentInput');
     if (commentInput) {
         commentInput.addEventListener('keypress', function (e) {
@@ -5444,7 +5363,6 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 });
-    /* ===== 本地已读记录 ===== */
 function getSeenIds() {
     try { return new Set(JSON.parse(localStorage.getItem('seen_ids') || '[]')); }
     catch(e) { return new Set(); }
@@ -5461,7 +5379,7 @@ window.addEventListener('resize', () => {
 });
     function requestMobilePermissions() {
     const perms = window.cordova?.plugins?.permissions;
-    if (!perms) return;   // 浏览器直接跳过
+    if (!perms) return;
     const list = [
         perms.RECORD_AUDIO,
         perms.ACCESS_FINE_LOCATION,
@@ -5473,7 +5391,6 @@ window.addEventListener('resize', () => {
     );
 }
 
-// APK 里 deviceready 后再请求一次
 document.addEventListener('deviceready', () => {
     setupVoiceLongPress();
     requestMobilePermissions();
