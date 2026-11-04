@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>位置地图</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+
+:root{
+  --pink:#ff69b4; --deep-pink:#ff1493; --purple:#c471f5;
+  --blue:#4facfe; --cyan:#00c6fb; --orange:#ffa940;
+  --green:#3bd16f; --cream:#fff8ee; --label:#d63384;
+}
+
+html,body{
+  width:100%;height:100%;
+  font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+  background:transparent; overflow:hidden;
+}
+
+#mapOverlay{
+  position:absolute; inset:0; background:transparent;
+  display:none; z-index:5000; animation:fadeIn .25s ease;
+}
+#mapOverlay.show{display:block}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+
+#mapCard{
+  width:100%; height:100%; background:var(--cream);
+  display:flex; flex-direction:column; overflow:hidden; position:relative;
+}
+
+#mapTopbar{
+  flex-shrink:0;
+  background:linear-gradient(135deg,#ff9a9e 0%,#fad0c4 25%,#ffd1ff 50%,#c471f5 75%,#4facfe 100%);
+  background-size:200% 200%;
+  animation:topbarFlow 6s ease infinite;
+  padding:14px 18px 12px;
+  display:flex; align-items:center; gap:12px; color:#fff;
+  position:relative;
+  box-shadow:0 4px 14px rgba(196,113,245,.25);
+  z-index:30;
+}
+@keyframes topbarFlow{
+  0%{background-position:0% 50%}
+  50%{background-position:100% 50%}
+  100%{background-position:0% 50%}
+}
+#mapBackBtn{
+  width:34px;height:34px;
+  background:rgba(255,255,255,.28);
+  border:1.5px solid rgba(255,255,255,.6);
+  border-radius:50%; color:#fff; font-size:18px;
+  display:flex; align-items:center; justify-content:center;
+  cursor:pointer; flex-shrink:0;
+  transition:background .18s,transform .18s;
+  backdrop-filter:blur(4px); -webkit-backdrop-filter:blur(4px);
+}
+#mapBackBtn:hover{background:rgba(255,255,255,.45);transform:scale(1.06)}
+#mapBackBtn:active{transform:scale(.94)}
+#mapTopTitle{flex:1;min-width:0}
+#mapTopTitle h3{
+  font-family:'Fredoka One',cursive;
+  font-size:17px; letter-spacing:.5px;
+  white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+  text-shadow:0 1px 3px rgba(0,0,0,.15);
+}
+#mapTopTitle p{
+  font-size:11px; opacity:.92; margin-top:1px;
+  white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+  text-shadow:0 1px 2px rgba(0,0,0,.15);
+}
+
+#mapContainer{flex:1;min-height:0;position:relative}
+#mapEl{width:100%;height:100%}
+
+#mapLoading{
+  position:absolute; inset:0;
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  gap:16px;
+  background:linear-gradient(135deg,#fff0f7 0%,#f5f0ff 50%,#e8f4fb 100%);
+  z-index:10;
+}
+.map-spinner{
+  width:52px;height:52px;border-radius:50%;
+  border:5px solid transparent;
+  border-top-color:#ff69b4; border-right-color:#c471f5;
+  border-bottom-color:#4facfe; border-left-color:#ffa940;
+  animation:spin 1s linear infinite;
+  box-shadow:0 0 20px rgba(255,105,180,.3);
+}
+@keyframes spin{to{transform:rotate(360deg)}}
+#mapLoading p{
+  font-size:14px; font-weight:600;
+  background:linear-gradient(135deg,#ff69b4,#c471f5,#4facfe);
+  background-size:200% 200%;
+  -webkit-background-clip:text; background-clip:text;
+  -webkit-text-fill-color:transparent;
+  animation:topbarFlow 3s ease infinite;
+  font-family:'Fredoka One',cursive; letter-spacing:1px;
+}
+
+#mapCard::after{
+  content:""; position:absolute; bottom:0; left:0; right:0; height:4px;
+  background:linear-gradient(90deg,#ff69b4,#c471f5,#4facfe,#3bd16f,#ffa940,#ff69b4);
+  background-size:200% 100%;
+  animation:topbarFlow 4s linear infinite;
+  z-index:20; pointer-events:none;
+}
+
+#locTip{
+  position:absolute; left:50%; bottom:14px;
+  transform:translateX(-50%);
+  background:rgba(0,0,0,.72); color:#fff;
+  font-size:12px; padding:8px 14px; border-radius:20px;
+  display:none; align-items:center; gap:8px;
+  z-index:40; white-space:nowrap; max-width:92%;
+  box-shadow:0 4px 12px rgba(0,0,0,.25);
+}
+#locTip.show{display:flex}
+#locTip button{
+  background:linear-gradient(135deg,#ff69b4,#ff1493);
+  border:none; color:#fff; font-size:12px;
+  padding:4px 12px; border-radius:12px; cursor:pointer;
+  font-weight:600; flex-shrink:0;
+}
+</style>
+</head>
+<body>
+
+<div id="mapOverlay">
+  <div id="mapCard">
+    <div id="mapTopbar">
+      <button id="mapBackBtn" onclick="closeLoveMap()">←</button>
+      <div id="mapTopTitle">
+        <h3 id="mapTitleText">📍 帖子位置</h3>
+        <p id="mapAddressText">加载中...</p>
+      </div>
+    </div>
+
+    <div id="mapContainer">
+      <div id="mapEl"></div>
+      <div id="mapLoading">
+        <div class="map-spinner"></div>
+        <p>地图加载中 💕</p>
+      </div>
+      <div id="locTip">
+        <span id="locTipText">定位失败</span>
+        <button onclick="retryLocate()">重试定位</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+'use strict';
+
+const AMAP_KEY     = '2780dd1140f7369ffcf15c59950fb64b';
+const AMAP_VERSION = '2.0';
+const AMAP_SECKEY  = '';
+const AMAP_STYLE   = 'amap://styles/normal';
+
+let _mapInited    = false;
+let _mapObj       = null;
+let _myMarker     = null;
+let _targetMarker = null;
+
+let _targetLng    = 0;
+let _targetLat    = 0;
+let _targetName   = '帖子位置';
+let _authorName   = 'TA';
+let _authorAvatar = '';
+let _myName       = '我';
+let _myAvatar     = '';
+
+let _parentMyLng  = null;
+let _parentMyLat  = null;
+
+window.openLoveMap = function(opts) {
+  _targetLng    = parseFloat(opts.lng)    || 0;
+  _targetLat    = parseFloat(opts.lat)    || 0;
+  _targetName   = opts.address  || '帖子位置';
+  _authorName   = opts.authorName   || 'TA';
+  _authorAvatar = opts.authorAvatar || '';
+  _myName       = opts.myName   || '我';
+  _myAvatar     = opts.myAvatar || '';
+
+  _parentMyLng = (opts.myLng != null && opts.myLat != null) ? parseFloat(opts.myLng) : null;
+  _parentMyLat = (opts.myLng != null && opts.myLat != null) ? parseFloat(opts.myLat) : null;
+
+  document.getElementById('mapTitleText').textContent   = '📍 ' + _targetName;
+  document.getElementById('mapAddressText').textContent = _targetName;
+
+  document.getElementById('mapOverlay').classList.add('show');
+  hideLocTip();
+
+  if (!_mapInited) {
+    _loadAmapSDK(() => _initMap());
+  } else {
+    _refreshMap();
+  }
+};
+
+window.addEventListener('message', function (e) {
+  if (e.data && e.data.type === 'openLoveMap') {
+    window.openLoveMap(e.data.payload);
+  }
+});
+
+window.closeLoveMap = function() {
+  document.getElementById('mapOverlay').classList.remove('show');
+  try {
+    if (window.parent && window.parent !== window) {
+      window.parent.postMessage({ type: 'closeMap' }, '*');
+    }
+  } catch (e) {}
+};
+
+function _loadAmapSDK(cb) {
+  if (window.AMap) { cb(); return; }
+  if (AMAP_SECKEY) window._AMapSecurityConfig = { securityJsCode: AMAP_SECKEY };
+  window.forceWebGL = true;
+  const s = document.createElement('script');
+  s.src = `https://webapi.amap.com/maps?v=${AMAP_VERSION}&key=${AMAP_KEY}`;
+  s.onload = cb;
+  s.onerror = () => {
+    document.getElementById('mapLoading').innerHTML =
+      '<p style="color:#dc3545;font-size:13px">地图加载失败，请检查网络或 Key 配置</p>';
+  };
+  document.head.appendChild(s);
+}
+
+function _initMap() {
+  _mapInited = true;
+  _mapObj = new AMap.Map('mapEl', {
+    zoom: 14,
+    center: [_targetLng, _targetLat],
+    mapStyle: AMAP_STYLE,
+    features: ['bg','road','building','point'],
+    viewMode: '2D',
+  });
+
+  _mapObj.on('complete', () => {
+    document.getElementById('mapLoading').style.display = 'none';
+    _placeTargetMarker();
+    if (_parentMyLng != null && _parentMyLat != null) {
+      _placeMyMarker(_parentMyLng, _parentMyLat);
+      _fitBounds();
+    } else {
+      _locateMe();
+    }
+  });
+}
+
+function _refreshMap() {
+  document.getElementById('mapLoading').style.display = 'none';
+  if (_targetMarker) _targetMarker.setPosition([_targetLng, _targetLat]);
+  else                _placeTargetMarker();
+  _mapObj.setCenter([_targetLng, _targetLat]);
+
+  if (_parentMyLng != null && _parentMyLat != null) {
+    _placeMyMarker(_parentMyLng, _parentMyLat);
+    _fitBounds();
+  } else {
+    _locateMe();
+  }
+}
+
+window.retryLocate = function() {
+  hideLocTip();
+  _locateMe();
+};
+
+/* ================= 作者标记 ================= */
+function _placeTargetMarker() {
+  if (_targetMarker) _targetMarker.setMap(null);
+
+  const content = `
+    <div style="
+      display:flex;flex-direction:column;align-items:center;
+      filter:drop-shadow(0 3px 10px rgba(196,113,245,.5));
+      pointer-events:auto;
+    ">
+      <div style="
+        background:linear-gradient(135deg,#ff69b4,#c471f5,#4facfe);
+        background-size:200% 200%;
+        animation:markerFlow 3s ease infinite;
+        color:#fff;font-size:11px;font-weight:700;
+        padding:5px 12px;border-radius:14px;white-space:nowrap;
+        box-shadow:0 3px 10px rgba(196,113,245,.45);
+        border:1.5px solid rgba(255,255,255,.7);
+      ">${_escHtml(_authorName)}</div>
+      <div style="
+        width:42px;height:42px;border-radius:50%;
+        padding:2px;
+        background:linear-gradient(135deg,#ff69b4,#c471f5,#4facfe);
+        background-size:200% 200%;
+        animation:markerFlow 3s ease infinite;
+        margin-top:4px;
+        box-shadow:0 3px 10px rgba(196,113,245,.4);
+      ">
+        <img src="${_escHtml(_authorAvatar || './c.jpg')}"
+          onerror="this.src='./c.jpg'"
+          style="width:100%;height:100%;border-radius:50%;
+                 object-fit:cover;background:#fdf2f8;
+                 border:2px solid #fff;">
+      </div>
+      <div style="width:0;height:0;
+        border-left:7px solid transparent;
+        border-right:7px solid transparent;
+        border-top:10px solid #c471f5;
+        margin-top:-1px;
+        filter:drop-shadow(0 2px 3px rgba(196,113,245,.4));
+      "></div>
+    </div>
+    <style>@keyframes markerFlow{
+      0%{background-position:0% 50%}
+      50%{background-position:100% 50%}
+      100%{background-position:0% 50%}
+    }</style>`;
+
+  _targetMarker = new AMap.Marker({
+    position: [_targetLng, _targetLat],
+    content: content,
+    anchor: 'bottom-center',
+    zIndex: 120,
+    zooms: [1, 20],
+  });
+  _mapObj.add(_targetMarker);
+}
+
+/* ================= 自行定位 ================= */
+function _locateMe() {
+  if (!navigator.geolocation) {
+    showLocTip('当前浏览器不支持定位');
+    return;
+  }
+
+  if (location.protocol !== 'https:' &&
+      location.hostname !== 'localhost' &&
+      location.hostname !== '127.0.0.1') {
+    showLocTip('当前为 http 页面，定位可能被浏览器拦截');
+  } else {
+    showLocTip('正在定位…', false);
+  }
+
+  navigator.geolocation.getCurrentPosition(
+    pos => {
+      hideLocTip();
+      _placeMyMarker(pos.coords.longitude, pos.coords.latitude);
+      _fitBounds();
+    },
+    err => {
+      console.warn('定位失败:', err.message || err.code);
+      let msg = '定位失败';
+      if (err.code === 1) msg = '定位权限被拒绝，请允许后再试';
+      else if (err.code === 2) msg = '无法获取位置，请检查 GPS / 网络';
+      else if (err.code === 3) msg = '定位超时，请重试';
+      showLocTip(msg);
+      if (_mapObj) _mapObj.setCenter([_targetLng, _targetLat]);
+    },
+    { enableHighAccuracy: true, timeout: 12000, maximumAge: 30000 }
+  );
+}
+
+/* ================= 我的位置标记 ================= */
+function _placeMyMarker(lng, lat) {
+  if (_myMarker) { _myMarker.setPosition([lng, lat]); return; }
+
+  const content = `
+    <div style="
+      display:flex;flex-direction:column;align-items:center;
+      filter:drop-shadow(0 3px 10px rgba(79,172,254,.5));
+      pointer-events:auto;
+    ">
+      <div style="
+        background:linear-gradient(135deg,#00c6fb,#4facfe,#3bd16f);
+        background-size:200% 200%;
+        animation:markerFlow2 3s ease infinite;
+        color:#fff;font-size:11px;font-weight:700;
+        padding:5px 12px;border-radius:14px;white-space:nowrap;
+        box-shadow:0 3px 10px rgba(79,172,254,.45);
+        border:1.5px solid rgba(255,255,255,.7);
+      ">${_escHtml(_myName)}</div>
+      <div style="
+        width:42px;height:42px;border-radius:50%;
+        padding:2px;
+        background:linear-gradient(135deg,#00c6fb,#4facfe,#3bd16f);
+        background-size:200% 200%;
+        animation:markerFlow2 3s ease infinite;
+        margin-top:4px;
+        box-shadow:0 3px 10px rgba(79,172,254,.4);
+      ">
+        <img src="${_escHtml(_myAvatar || './c.jpg')}"
+          onerror="this.src='./c.jpg'"
+          style="width:100%;height:100%;border-radius:50%;
+                 object-fit:cover;background:#e8f4fb;
+                 border:2px solid #fff;">
+      </div>
+      <div style="width:0;height:0;
+        border-left:7px solid transparent;
+        border-right:7px solid transparent;
+        border-top:10px solid #4facfe;
+        margin-top:-1px;
+        filter:drop-shadow(0 2px 3px rgba(79,172,254,.4));
+      "></div>
+    </div>
+    <style>@keyframes markerFlow2{
+      0%{background-position:0% 50%}
+      50%{background-position:100% 50%}
+      100%{background-position:0% 50%}
+    }</style>`;
+
+  _myMarker = new AMap.Marker({
+    position: [lng, lat],
+    content: content,
+    anchor: 'bottom-center',
+    zIndex: 110,
+    zooms: [1, 20],
+  });
+  _mapObj.add(_myMarker);
+}
+
+function _fitBounds() {
+  if (!_myMarker || !_targetMarker) {
+    if (_mapObj) _mapObj.setCenter([_targetLng, _targetLat]);
+    return;
+  }
+  _mapObj.setFitView([_myMarker, _targetMarker], true, [60, 80, 60, 80]);
+}
+
+/* ================= 提示条 ================= */
+function showLocTip(text, withBtn = true) {
+  const tip = document.getElementById('locTip');
+  const txt = document.getElementById('locTipText');
+  const btn = tip.querySelector('button');
+  txt.textContent = text;
+  btn.style.display = withBtn ? '' : 'none';
+  tip.classList.add('show');
+}
+function hideLocTip() {
+  document.getElementById('locTip').classList.remove('show');
+}
+
+function _escHtml(str) {
+  const d = document.createElement('div');
+  d.textContent = str || '';
+  return d.innerHTML;
+}
+</script>
+</body>
+</html>
