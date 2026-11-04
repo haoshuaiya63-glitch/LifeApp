@@ -2385,16 +2385,14 @@ function renderStickerGrid() {
         return;
     }
     grid.innerHTML = '';
-
     stickerCache.forEach(s => {
         const item = document.createElement('div');
         item.className = 'sticker-grid-item';
-        item.style.position = 'relative';
 
-        const img = document.createElement('img');
-        img.src = `${API_BASE}${s.url}`;
-        img.loading = 'lazy';
-        item.appendChild(img);
+        const inner = document.createElement('div');
+        inner.className = 'sticker-grid-item-inner';
+        inner.style.position = 'relative';
+        inner.innerHTML = `<img data-cache-src="${API_BASE}${s.url}" loading="lazy">`;
 
         if (stickerManageMode) {
             const delBtn = document.createElement('div');
@@ -2411,35 +2409,41 @@ function renderStickerGrid() {
             delBtn.textContent = '×';
             delBtn.addEventListener('click', (e) => {
                 e.stopPropagation();
-                if (confirm('删除这个表情包吗？')) deleteSticker(s.id, item);
+                if (confirm('删除这个表情包吗？')) {
+                    deleteSticker(s.id, item);
+                }
             });
-            item.appendChild(delBtn);
-
-            item.addEventListener('click', () => {
-                if (confirm('删除这个表情包吗？')) deleteSticker(s.id, item);
+            inner.style.border = '2px solid #ffb6c1';
+            inner.appendChild(delBtn);
+            inner.addEventListener('click', () => {
+                if (confirm('删除这个表情包吗？')) {
+                    deleteSticker(s.id, item);
+                }
             });
-            item.style.border = '2px solid #ffb6c1';
         } else {
-            item.addEventListener('click', () => selectSticker(s.url));
+            inner.addEventListener('click', () => selectSticker(s.url));
 
             let pressTimer = null;
             const startPress = () => {
                 pressTimer = setTimeout(() => {
                     pressTimer = null;
-                    if (confirm('删除这个表情包吗？')) deleteSticker(s.id, item);
+                    if (confirm('删除这个表情包吗？')) {
+                        deleteSticker(s.id, item);
+                    }
                 }, 600);
             };
             const cancelPress = () => {
                 if (pressTimer) { clearTimeout(pressTimer); pressTimer = null; }
             };
-            item.addEventListener('mousedown', startPress);
-            item.addEventListener('touchstart', startPress, { passive: true });
-            item.addEventListener('mouseup', cancelPress);
-            item.addEventListener('mouseleave', cancelPress);
-            item.addEventListener('touchend', cancelPress);
-            item.addEventListener('touchcancel', cancelPress);
+            inner.addEventListener('mousedown', startPress);
+            inner.addEventListener('touchstart', startPress, { passive: true });
+            inner.addEventListener('mouseup', cancelPress);
+            inner.addEventListener('mouseleave', cancelPress);
+            inner.addEventListener('touchend', cancelPress);
+            inner.addEventListener('touchcancel', cancelPress);
         }
 
+        item.appendChild(inner);
         grid.appendChild(item);
     });
 }
@@ -2491,6 +2495,7 @@ async function uploadSticker() {
         const result = await res.json();
         if (result.success) {
             await loadStickers();
+            LocalCache.syncStickers(API_BASE, DEVICE_ID);          // 同步：下载新表情包到本地
         } else {
             alert('上传失败：' + result.message);
         }
@@ -2747,6 +2752,7 @@ async function collectStickerFromComment(stickerUrl, triggerEl) {
         const result = await res.json();
         if (result.success) {
             showStickerToast(result.already_collected ? '这个表情包你已经有啦～' : '已收藏到我的表情包 💕');
+            LocalCache.syncStickers(API_BASE, DEVICE_ID);          // 同步：下载新收藏的表情包
         } else {
             showStickerToast(result.message || '收藏失败，请稍后重试');
         }
@@ -3239,6 +3245,7 @@ document.addEventListener('DOMContentLoaded', async function () {
 
     await restoreLocalState();      // 先恢复 device_id / 已看帖子
     loadMyProfile();                // 再加载资料（先本地后服务器）
+    LocalCache.syncStickers(API_BASE, DEVICE_ID);   // 后台下载自己的全部表情包
 
     // 清理过大的图片缓存（默认上限 300MB）
     setTimeout(() => LocalCache.trimImages().catch(() => {}), 5000);
