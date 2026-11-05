@@ -8,6 +8,20 @@ const MUSIC_API = 'http://43.167.237.62:3600';
 const API_BASE = 'http://43.167.237.62:8000';
 const ZC_API = 'http://43.167.237.62:3800';
 
+/* ===== 带超时的 fetch（外部服务挂了不拖死首页） ===== */
+function fetchTimeout(url, opts = {}, ms = 5000) {
+    return new Promise((resolve, reject) => {
+        const ctrl = new AbortController();
+        const timer = setTimeout(() => {
+            ctrl.abort();
+            reject(new Error('timeout'));
+        }, ms);
+        fetch(url, { ...opts, signal: ctrl.signal })
+            .then(res => { clearTimeout(timer); resolve(res); })
+            .catch(err => { clearTimeout(timer); reject(err); });
+    });
+}
+
 /* ===== 音乐播放器系统 ===== */
 let musicList = [];
 let musicIndex = 0;
@@ -369,7 +383,7 @@ let isSearchMode = false;
 let searchQuery = '';
 
 /* ==========================================================
-   地图 iframe 控制：点击地址 → 打开 map.html → 本地渲染
+   地图 iframe 控制
    ========================================================== */
 function openPostMap(post) {
     const lat = parseFloat(post.lat);
@@ -760,7 +774,7 @@ function startLetterBounce() {
 typeWriter();
 
 /* ==================================
-桌宠系统 V3.0 - 支持拖拽固定
+桌宠系统 V3.0
 ================================== */
 const pet = document.getElementById("pet");
 const menu = document.getElementById("petMenu");
@@ -819,7 +833,7 @@ startPetLoop(['1.gif', '2.gif', '3.gif']);
 
 async function loadZcGifs() {
     try {
-        const r = await fetch(`${ZC_API}/pet/zc/gifs`);
+        const r = await fetchTimeout(`${ZC_API}/pet/zc/gifs`, {}, 4000);
         const d = await r.json();
 
         if (d.success && d.data && d.data.length) {
@@ -840,11 +854,11 @@ async function toggleZcMode() {
     hidePetMenu();
     zcModeOn = !zcModeOn;
 
-    fetch(`${ZC_API}/pet/zc/pref`, {
+    fetchTimeout(`${ZC_API}/pet/zc/pref`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ device_id: DEVICE_ID, enabled: zcModeOn })
-    }).catch(() => {});
+    }, 4000).catch(() => {});
 
     if (zcModeOn) {
         const ok = await loadZcGifs();
@@ -1081,8 +1095,8 @@ window.addEventListener("resize", () => {
     pet.style.top = py + "px";
 });
 
-/* ===== 设备唯一标识（localStorage + 本地文件双备份） ===== */
-let deviceIdFresh = false;   // 本次启动是否新生成（说明 localStorage 被清过）
+/* ===== 设备唯一标识 ===== */
+let deviceIdFresh = false;
 
 function getDeviceId() {
     let id = localStorage.getItem('ld_device_id');
@@ -1095,15 +1109,14 @@ function getDeviceId() {
 }
 let DEVICE_ID = getDeviceId();
 
-/* 启动时从本地文件恢复 device_id / 已看帖子 */
 async function restoreLocalState() {
     try {
         const savedId = ((await LocalCache.readText('device_id.txt')) || '').trim();
         if (savedId && deviceIdFresh) {
-            DEVICE_ID = savedId;                                   // localStorage 丢了，用文件里的
+            DEVICE_ID = savedId;
             localStorage.setItem('ld_device_id', DEVICE_ID);
         } else if (!savedId) {
-            LocalCache.writeText('device_id.txt', DEVICE_ID);      // 首次备份
+            LocalCache.writeText('device_id.txt', DEVICE_ID);
         }
 
         const arr = await LocalCache.readJSON('seen_ids.json');
@@ -1146,21 +1159,30 @@ function updateAvatarUI() {
         const url = myProfile.avatar_url.startsWith('/')
             ? API_BASE + myProfile.avatar_url
             : myProfile.avatar_url;
-        setCachedSrc(avatarImg, url);          // 本地优先
+        setCachedSrc(avatarImg, url);
     } else {
         avatarImg.src = DEFAULT_AVATAR_URL;
     }
 }
+
+/* 总未读：延迟 + 超时 + 失败静默（关键！避免抢 db_lock 拖死首屏） */
 async function loadTotalUnreadCount() {
+    // 延迟 3 秒，避开 loadMediaData 的首屏高峰
+    await new Promise(r => setTimeout(r, 3000));
     try {
-        const res = await fetch(`${API_BASE}/media?page=1&limit=9999&device_id=${encodeURIComponent(DEVICE_ID)}`);
+        const res = await fetchTimeout(
+            `${API_BASE}/media?page=1&limit=9999&device_id=${encodeURIComponent(DEVICE_ID)}`,
+            {},
+            15000
+        );
         const result = await res.json();
         if (result.success && result.data) {
             const total = result.data.reduce((sum, item) => sum + (item.unread_count || 0), 0);
             updateTotalUnreadBadge(total);
         }
     } catch (e) {
-        console.error('加载总未读数失败:', e);
+        // 超时/失败静默，不影响主页面
+        console.warn('加载总未读数失败（不影响主页面）:', e.message || e);
     }
 }
 
@@ -1175,9 +1197,7 @@ function updateTotalUnreadBadge(total) {
     }
 }
 
-/* 个人资料：先本地，再服务器 */
 async function loadMyProfile() {
-    // ① 本地
     try {
         const local = await LocalCache.readJSON('profile.json');
         if (local && local.device_id === DEVICE_ID) {
@@ -1189,7 +1209,6 @@ async function loadMyProfile() {
         }
     } catch (e) {}
 
-    // ② 服务器
     try {
         const res = await fetch(`${API_BASE}/profile/${DEVICE_ID}`);
         const result = await res.json();
@@ -1205,14 +1224,16 @@ async function loadMyProfile() {
     } finally {
         updateAvatarUI();
         try {
-            const r = await fetch(`${ZC_API}/pet/zc/pref/${DEVICE_ID}`);
+            const r = await fetchTimeout(`${ZC_API}/pet/zc/pref/${DEVICE_ID}`, {}, 4000);
             const d = await r.json();
             if (d.success && d.enabled) {
                 zcModeOn = true;
                 await loadZcGifs();
                 updateZcBtn();
             }
-        } catch (e) { }
+        } catch (e) {
+            console.warn('ZC 服务不可用', e);
+        }
         loadTotalUnreadCount();
     }
 }
@@ -1298,7 +1319,7 @@ updateLoveDays();
 setInterval(updateLoveDays, 60000);
 
 /* =====================================================
-   帖子列表：先读本地缓存立即渲染，再请求服务器，有变化才重绘
+   帖子列表：先本地，再服务器
    ===================================================== */
 let mediaLoadSeq = 0;
 
@@ -1312,9 +1333,14 @@ async function loadMediaData() {
     const cacheKey = `media_p${currentPage}.json`;
     let localStr = null;
 
-    // ① 本地
+    // ① 本地（try/catch 保护）
     if (useCache) {
-        const local = await LocalCache.readJSON(cacheKey);
+        let local = null;
+        try {
+            local = await LocalCache.readJSON(cacheKey);
+        } catch (e) {
+            console.warn('本地列表缓存读取失败，跳过', e);
+        }
         if (seq !== mediaLoadSeq) return;
         if (local && Array.isArray(local.data) && local.data.length) {
             localStr = JSON.stringify(local.data);
@@ -1330,14 +1356,18 @@ async function loadMediaData() {
         pagEl.style.display = 'none';
     }
 
-    // ② 服务器
+    // ② 服务器（15 秒超时，避免死等）
     try {
-        const response = await fetch(`${API_BASE}/media?page=${currentPage}&limit=${itemsPerPage}&device_id=${encodeURIComponent(DEVICE_ID)}`);
+        const response = await fetchTimeout(
+            `${API_BASE}/media?page=${currentPage}&limit=${itemsPerPage}&device_id=${encodeURIComponent(DEVICE_ID)}`,
+            {},
+            15000
+        );
         const result = await response.json();
         if (seq !== mediaLoadSeq) return;
         if (result.success) {
             if (useCache) LocalCache.writeJSON(cacheKey, result);
-            if (JSON.stringify(result.data) !== localStr) {      // ③ 有变化才重绘
+            if (JSON.stringify(result.data) !== localStr) {
                 mediaData = result.data;
                 renderMediaGrid(result.data);
             }
@@ -1357,7 +1387,6 @@ function getBgPositionForId(id) {
     const y = 20 + ((id * 53) % 60);
     return `${x}% ${y}%`;
 }
-// 渲染媒体网格（图片使用 data-cache-src，由 local.js 自动换成本地图）
 function renderMediaGrid(data) {
     const grid = document.getElementById('mediaGrid');
     grid.innerHTML = '';
@@ -1477,7 +1506,6 @@ function renderMediaGrid(data) {
         });
     });
 
-    // 卡片地址点击 → 打开地图
     grid.querySelectorAll('.loc-weather[data-geo-id]').forEach(el => {
         el.addEventListener('click', ev => {
             ev.stopPropagation();
@@ -1716,11 +1744,10 @@ function updateUploadProgress(percent) {
 }
 
 /* =====================================================
-   详情页：先本地后服务器
+   详情页
    ===================================================== */
 let detailRequestSeq = 0;
 
-// 把一条帖子数据渲染到详情页（本地数据和服务器数据共用）
 async function renderDetail(item, skipMedia) {
     if (!skipMedia) {
         detailSlideIdx = 0;
@@ -1738,7 +1765,6 @@ async function renderDetail(item, skipMedia) {
     }
     document.getElementById('detailDescription').textContent = item.description;
 
-    // 位置天气：可点击打开地图
     const hasGeo = item.lat && item.lng;
     const locHtml = (item.location || item.weather)
         ? `<span class="loc-weather" ${hasGeo ? 'id="detailLocWeather" style="cursor:pointer;text-decoration:underline dotted"' : ''}>${
@@ -1768,7 +1794,6 @@ async function renderDetail(item, skipMedia) {
 async function showDetail(id) {
     const seq = ++detailRequestSeq;
 
-    // 先清空旧帖子的评论和计数，避免切换时残留
     document.getElementById('commentsList').innerHTML = '';
     document.getElementById('commentCount').textContent = '0';
     document.getElementById('unreadBadge').style.display = 'none';
@@ -1783,8 +1808,12 @@ async function showDetail(id) {
 
     const cacheKey = `detail_${id}.json`;
 
-    // ① 本地缓存：有就立刻显示
-    const local = await LocalCache.readJSON(cacheKey);
+    let local = null;
+    try {
+        local = await LocalCache.readJSON(cacheKey);
+    } catch (e) {
+        console.warn('本地详情缓存读取失败，跳过', e);
+    }
     if (seq !== detailRequestSeq) return;
     if (local) {
         currentDetailId = id;
@@ -1793,12 +1822,14 @@ async function showDetail(id) {
         document.getElementById('detailPage').style.display = 'block';
     }
 
-    // ② 服务器：拿最新点赞 / 评论
     try {
-        const response = await fetch(`${API_BASE}/media/${id}?device_id=${encodeURIComponent(DEVICE_ID)}`);
+        const response = await fetchTimeout(
+            `${API_BASE}/media/${id}?device_id=${encodeURIComponent(DEVICE_ID)}`,
+            {},
+            15000
+        );
         const result = await response.json();
 
-        // 如果期间用户点了别的帖子，丢弃这次响应
         if (seq !== detailRequestSeq) return;
 
         if (result.success) {
@@ -1808,7 +1839,6 @@ async function showDetail(id) {
 
             const changed = !local || JSON.stringify(local) !== JSON.stringify(item);
             if (changed) {
-                // 媒体没变就不重建，避免视频 / 轮播被打断
                 const mediaSame = !!local && local.url === item.url &&
                     JSON.stringify(local.images || null) === JSON.stringify(item.images || null);
                 await renderDetail(item, mediaSame);
@@ -1827,7 +1857,6 @@ async function showDetail(id) {
         }
     } catch (error) {
         console.error('加载详情错误:', error);
-        // 本地已经显示了就不弹错误
         if (seq === detailRequestSeq && !local) alert('加载详情失败');
     }
 }
@@ -1942,7 +1971,7 @@ function showFullscreen(src) {
         <img class="fullscreen-image" alt="全屏图片">
     `;
     document.body.appendChild(modal);
-    setCachedSrc(modal.querySelector('.fullscreen-image'), src);   // 本地优先
+    setCachedSrc(modal.querySelector('.fullscreen-image'), src);
     modal.onclick = () => {
         document.body.removeChild(modal);
     };
@@ -2062,9 +2091,8 @@ async function loadVisitors(mediaId) {
         console.error('加载足迹失败', e);
     }
 }
-// 隐藏详情页面
 function hideDetail() {
-    detailRequestSeq++;              // 作废还在飞行中的详情请求，避免关闭后又弹出来
+    detailRequestSeq++;
     closeMapFrame();
     document.getElementById('visitorCard').style.display = 'none';
     vtOpen = false;
@@ -2266,7 +2294,7 @@ async function addComment() {
                 && Array.isArray(detailData.data.comments)
                 && detailData.data.comments.length > 0) {
                 finalComments = detailData.data.comments;
-                LocalCache.writeJSON(`detail_${currentDetailId}.json`, detailData.data);   // 同步本地缓存
+                LocalCache.writeJSON(`detail_${currentDetailId}.json`, detailData.data);
             }
         } catch (e) {
             console.warn('重新拉取详情失败，保留原评论列表', e);
@@ -2334,12 +2362,16 @@ function hideStickerPicker() {
     }
 }
 
-// 表情包列表：先本地，再服务器
 async function loadStickers() {
     const grid = document.getElementById('stickerGrid');
     const key = `stickers_${DEVICE_ID}.json`;
 
-    const local = await LocalCache.readJSON(key);
+    let local = null;
+    try {
+        local = await LocalCache.readJSON(key);
+    } catch (e) {
+        console.warn('本地表情包缓存读取失败，跳过', e);
+    }
     const hasLocal = Array.isArray(local);
     if (hasLocal) {
         stickerCache = local;
@@ -2470,7 +2502,7 @@ async function deleteSticker(stickerId, itemEl) {
         const result = await res.json();
         if (result.success) {
             stickerCache = stickerCache.filter(s => s.id !== stickerId);
-            LocalCache.writeJSON(`stickers_${DEVICE_ID}.json`, stickerCache);   // 同步本地缓存
+            LocalCache.writeJSON(`stickers_${DEVICE_ID}.json`, stickerCache);
             itemEl.remove();
             if (!stickerCache.length) {
                 document.getElementById('stickerGrid').innerHTML =
@@ -2495,7 +2527,7 @@ async function uploadSticker() {
         const result = await res.json();
         if (result.success) {
             await loadStickers();
-            LocalCache.syncStickers(API_BASE, DEVICE_ID);          // 同步：下载新表情包到本地
+            LocalCache.syncStickers(API_BASE, DEVICE_ID);
         } else {
             alert('上传失败：' + result.message);
         }
@@ -2605,7 +2637,6 @@ function scrollToFirstUnread() {
 function renderComments(comments) {
     const list = document.getElementById('commentsList');
 
-    // 空数据时直接清空，避免残留上一个帖子的评论
     if (!Array.isArray(comments) || comments.length === 0) {
         list.innerHTML = '';
         updateUnreadBadge([]);
@@ -2722,14 +2753,13 @@ async function deleteComment(commentId, btnEl) {
         if (result.success) {
             document.getElementById('commentCount').textContent = result.total_comments;
             renderComments(result.comments);
-            // 本地缓存同步：删掉这条评论
             if (currentDetailId != null) {
                 LocalCache.readJSON(`detail_${currentDetailId}.json`).then(d => {
                     if (d && Array.isArray(result.comments)) {
                         d.comments = result.comments;
                         LocalCache.writeJSON(`detail_${currentDetailId}.json`, d);
                     }
-                });
+                }).catch(() => {});
             }
         } else {
             alert(result.message || '删除失败');
@@ -2752,7 +2782,7 @@ async function collectStickerFromComment(stickerUrl, triggerEl) {
         const result = await res.json();
         if (result.success) {
             showStickerToast(result.already_collected ? '这个表情包你已经有啦～' : '已收藏到我的表情包 💕');
-            LocalCache.syncStickers(API_BASE, DEVICE_ID);          // 同步：下载新收藏的表情包
+            LocalCache.syncStickers(API_BASE, DEVICE_ID);
         } else {
             showStickerToast(result.message || '收藏失败，请稍后重试');
         }
@@ -3134,7 +3164,7 @@ function handleDetailPageSwipe() {
     }
 }
 
-/* ===== 登录（断网但本地有缓存时，也允许进入） ===== */
+/* ===== 登录 ===== */
 async function loginWithSwipe() {
     const name = "陆";
     const errorMsg = document.getElementById('errorMsg');
@@ -3157,8 +3187,12 @@ async function loginWithSwipe() {
         }
     } catch (error) {
         console.error('登录错误:', error);
-        // 网络不通：本地有缓存就直接进入离线浏览
-        const cached = await LocalCache.readJSON('media_p1.json');
+        let cached = null;
+        try {
+            cached = await LocalCache.readJSON('media_p1.json');
+        } catch (e) {
+            console.warn('本地缓存也读不出来', e);
+        }
         if (cached && Array.isArray(cached.data) && cached.data.length) {
             showStickerToast('网络不可用，正在显示本地缓存');
             enterMainPage();
@@ -3169,12 +3203,16 @@ async function loginWithSwipe() {
     }
 }
 
+/* ★ 关键：三个任务并行，谁也不等谁 */
 async function enterMainPage() {
     document.getElementById('loginPage').style.display = 'none';
     document.getElementById('mainPage').style.display = 'block';
     initSwipeListeners();
-    await loadMyProfile();
+
+    // loadMyProfile 里要请求 3800 ZC 服务，慢的话不能拖累帖子列表和周信
+    loadMyProfile().catch(e => console.warn('加载资料失败', e));
     loadMediaData();
+    checkWeeklyLetter();
 }
 
 function initHeaderTitleBounce() {
@@ -3187,7 +3225,86 @@ function initHeaderTitleBounce() {
     }).join('');
 }
 
-/* ===== 已看帖子（localStorage + 本地文件双备份） ===== */
+/* =========================================
+   ★ 小芒果的周信（之前被删掉了，现补回）
+   ========================================= */
+let currentLetter = null;
+let letterShowing = false;
+
+async function checkWeeklyLetter() {
+    if (letterShowing) return;
+    try {
+        const res = await fetchTimeout(`${API_BASE}/weekly-letter?test=1`, {}, 10000);
+        const r = await res.json();
+        if (!r.success || !r.available) return;
+        const L = r.letter;
+        if (!L || !L.week_start) return;
+
+        // ★ 无论本周有没有开过，先把这封信归档一次（幂等）
+        archiveLetterFromData(L);
+
+        if (localStorage.getItem('letter_opened') === L.week_start) return;
+
+        currentLetter = L;
+        showEnvelope();
+    } catch (e) {
+        console.warn('检查周信失败', e);
+    }
+}
+function showEnvelope() {
+    if (!currentLetter) return;
+    const overlay = document.getElementById('letterOverlay');
+    const env = document.getElementById('env');
+    const envStage = document.getElementById('envStage');
+    const letterCard = document.getElementById('letterCard');
+    if (!overlay || !env || !envStage || !letterCard) {
+        console.warn('信封 HTML 元素缺失，检查 life2.html 里是否包含 #letterOverlay');
+        return;
+    }
+    letterShowing = true;
+    env.classList.remove('open');
+    envStage.style.display = 'flex';
+    letterCard.classList.remove('show');
+    overlay.classList.add('show');
+    if (typeof spawnHearts === 'function') spawnHearts(16);
+}
+
+function openEnvelope() {
+    const env = document.getElementById('env');
+    if (!env || env.classList.contains('open') || !currentLetter) return;
+    env.classList.add('open');
+    if (typeof spawnHearts === 'function') spawnHearts(24);
+    if (navigator.vibrate) navigator.vibrate(60);
+
+    document.getElementById('letterBody').textContent = currentLetter.content;
+    document.getElementById('letterDate').textContent = currentLetter.date_text;
+    localStorage.setItem('letter_opened', currentLetter.week_start);
+
+    // ★ 立刻归档（不等 setTimeout）
+    archiveLetterFromData(currentLetter);
+
+    setTimeout(() => {
+        document.getElementById('envStage').style.display = 'none';
+        document.getElementById('letterCard').classList.add('show');
+    }, 1000);
+}
+
+function closeLetter() {
+    const overlay = document.getElementById('letterOverlay');
+    if (overlay) overlay.classList.remove('show');
+    letterShowing = false;
+}
+
+async function showLatestLetter() {
+    hidePetMenu();
+    try {
+        const r = await (await fetch(`${API_BASE}/weekly-letter?latest=1`)).json();
+        if (r.success && r.available) { currentLetter = r.letter; showEnvelope(); }
+        else showStickerToast('还没有收到小芒果的信哦');
+    } catch (e) { showStickerToast('加载失败，请稍后重试'); }
+}
+
+/* ===== 已看帖子 ===== */
 function getSeenIds() {
     try { return new Set(JSON.parse(localStorage.getItem('seen_ids') || '[]')); }
     catch(e) { return new Set(); }
@@ -3243,11 +3360,10 @@ document.addEventListener('DOMContentLoaded', async function () {
         });
     }
 
-    await restoreLocalState();      // 先恢复 device_id / 已看帖子
-    loadMyProfile();                // 再加载资料（先本地后服务器）
-    LocalCache.syncStickers(API_BASE, DEVICE_ID);   // 后台下载自己的全部表情包
+    await restoreLocalState();
+    loadMyProfile();
+    LocalCache.syncStickers(API_BASE, DEVICE_ID);
 
-    // 清理过大的图片缓存（默认上限 300MB）
     setTimeout(() => LocalCache.trimImages().catch(() => {}), 5000);
 });
 
@@ -3255,3 +3371,170 @@ document.addEventListener('deviceready', () => {
     setupVoiceLongPress();
     requestMobilePermissions();
 }, false);
+/* =====================================================
+   往日信件：把看过的信存下来，随时回看
+   ===================================================== */
+const LETTER_HISTORY_KEY = 'letter_history';
+const LETTER_HISTORY_MAX = 60;
+
+function letterDateStr(d) {
+    const p = n => String(n).padStart(2, '0');
+    return `${d.getFullYear()}.${p(d.getMonth() + 1)}.${p(d.getDate())}`;
+}
+
+function getLetterHistory() {
+    try {
+        const arr = JSON.parse(localStorage.getItem(LETTER_HISTORY_KEY) || '[]');
+        return Array.isArray(arr) ? arr.filter(x => x && x.body) : [];
+    } catch (e) { return []; }
+}
+
+function saveLetterHistory(arr) {
+    try {
+        localStorage.setItem(LETTER_HISTORY_KEY, JSON.stringify(arr.slice(0, LETTER_HISTORY_MAX)));
+    } catch (e) {}
+}
+/* 从周信数据对象直接归档（不依赖 DOM） */
+function archiveLetterFromData(L) {
+    if (!L || !L.content) return;
+    const body = String(L.content).trim();
+    if (!body) return;
+
+    const date = (L.date_text || '').trim() || letterDateStr(new Date());
+    const head = '💌 来自小芒果的周一小信';
+
+    const list = getLetterHistory();
+    const idx = list.findIndex(x => x.date === date);
+
+    if (idx >= 0) {
+        // 已有同期，保留内容更长的那份
+        if ((list[idx].body || '').length >= body.length) return;
+        list[idx] = { date, head, body };
+    } else {
+        list.unshift({ date, head, body });
+    }
+    saveLetterHistory(list);
+}
+function archiveCurrentLetter() {
+    const bodyEl = document.getElementById('letterBody');
+    if (!bodyEl) return;
+    const body = (bodyEl.innerText || bodyEl.textContent || '').trim();
+    if (!body) return;
+
+    const dateEl = document.getElementById('letterDate');
+    const headEl = document.querySelector('#letterCard .letter-head');
+    const date = ((dateEl && dateEl.innerText) || '').trim() || letterDateStr(new Date());
+    const head = ((headEl && headEl.innerText) || '').trim() || '💌 来自小芒果的小信';
+
+    const list = getLetterHistory();
+    const idx = list.findIndex(x => x.date === date);
+
+    if (idx >= 0) {
+        if (list[idx].body === body) return;
+        if (body.length >= (list[idx].body || '').length) {
+            list[idx] = { date, head, body };
+            saveLetterHistory(list);
+        }
+        return;
+    }
+    list.unshift({ date, head, body });
+    saveLetterHistory(list);
+}
+
+function showLetterHistory() {
+    try {
+        const ov = document.getElementById('letterOverlay');
+        if (ov) ov.classList.remove('show');
+        if (typeof hidePetMenu === 'function') hidePetMenu();
+
+        archiveCurrentLetter();
+
+        const modal = document.getElementById('letterHistoryModal');
+        if (!modal) {
+            alert('找不到 #letterHistoryModal，请确认 HTML 已正确保存');
+            return;
+        }
+        modal.style.display = 'flex';
+        modal.style.zIndex = '999999';
+        renderLetterHistory();
+    } catch (e) {
+        console.error('showLetterHistory 出错:', e);
+        alert('打开信件出错：' + e.message);
+    }
+}
+
+function hideLetterHistory() {
+    const m = document.getElementById('letterHistoryModal');
+    if (m) m.style.display = 'none';
+}
+
+function renderLetterHistory() {
+    const listEl = document.getElementById('letterHistoryList');
+    if (!listEl) return;
+
+    const list = getLetterHistory();
+    if (!list.length) {
+        listEl.innerHTML = '<div class="lh-empty">还没有信件哦～<br>拆开一次信封后，信就会留在这里啦 💌</div>';
+        return;
+    }
+
+    listEl.innerHTML = '';
+    list.forEach((item, i) => {
+        const preview = (item.body || '').replace(/\s+/g, ' ').trim();
+        const card = document.createElement('div');
+        card.className = 'lh-item';
+        card.innerHTML = `
+            <div class="lh-item-top">
+                <span class="lh-item-date">${escapeHtml(item.date || '')}</span>
+                <span class="lh-item-arrow">›</span>
+            </div>
+            <div class="lh-item-preview">${escapeHtml(preview.slice(0, 44))}${preview.length > 44 ? '…' : ''}</div>
+        `;
+        card.addEventListener('click', () => viewHistoryLetter(i));
+        listEl.appendChild(card);
+    });
+}
+
+function viewHistoryLetter(idx) {
+    const item = getLetterHistory()[idx];
+    if (!item) return;
+
+    const modal  = document.getElementById('letterViewModal');
+    const cardEl = document.getElementById('lhViewCard');
+    if (!modal || !cardEl) return;
+
+    const headEl = document.getElementById('lhViewHead');
+    const bodyEl = document.getElementById('lhViewBody');
+    const dateEl = document.getElementById('lhViewDate');
+    if (headEl) headEl.textContent = item.head || '💌 来自小芒果的小信';
+    if (bodyEl) bodyEl.textContent = item.body || '';
+    if (dateEl) dateEl.textContent = item.date || '';
+
+    hideLetterHistory();
+    modal.style.display = 'flex';
+    cardEl.classList.remove('show');
+    void cardEl.offsetWidth;
+    cardEl.classList.add('show');
+}
+
+function closeLetterView() {
+    const modal  = document.getElementById('letterViewModal');
+    const cardEl = document.getElementById('lhViewCard');
+    if (cardEl) cardEl.classList.remove('show');
+    if (modal) modal.style.display = 'none';
+}
+
+/* 拆信封后自动归档：包装已有的 openEnvelope */
+(function hookOpenEnvelope() {
+    if (typeof window.openEnvelope === 'function' && !window.openEnvelope.__lhHooked) {
+        const orig = window.openEnvelope;
+        window.openEnvelope = function () {
+            const r = orig.apply(this, arguments);
+            setTimeout(archiveCurrentLetter, 800);   // 等打字机写进去
+            setTimeout(archiveCurrentLetter, 3000);  // 再兜底一次
+            return r;
+        };
+        window.openEnvelope.__lhHooked = true;
+        console.log('[信件] openEnvelope 已挂钩');
+    }
+})();
