@@ -1258,137 +1258,58 @@ body {
 .sticker-grid::-webkit-scrollbar-thumb { background: #ffb6c1; border-radius: 6px; }
 .sticker-grid::-webkit-scrollbar-track { background: transparent; }
 
-/* ===== 表情包网格（扁平版，与旧版一致） ===== */
+/* ===== 修复：中间层必须撑满格子，图片才会被限制住 ===== */
 .sticker-grid-item {
-    width: 100%;
-    aspect-ratio: 1/1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow: visible;
+    overflow: visible !important;   /* 管理模式的 × 删除按钮在格子外沿，不能裁掉 */
+}
+.sticker-grid-item-inner {
+    width: 100% !important;
+    height: 100% !important;
     position: relative;
-    z-index: 0;
-    cursor: pointer;
     border-radius: 10px;
-    background: #fdf2f8;
-    border: 1px solid #ffe0ec;
-    transition: transform 0.15s ease;
+    box-sizing: border-box;
 }
-.sticker-grid-item img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    border-radius: 10px;
+.sticker-grid-item-inner img {
+    width: 100% !important;
+    height: 100% !important;
+    max-width: 100% !important;
+    max-height: 100% !important;
+    object-fit: contain !important;
+    padding: 3px;
     display: block;
+    border-radius: 10px;
 }
-.sticker-grid-item:hover {
-    transform: scale(1.06);
-    z-index: 10;
-}
-
-.sticker-grid-empty {
-    grid-column: 1 / -1;
-    text-align: center;
-    color: #bbb;
-    font-size: 13px;
-    padding: 20px 0;
-}
-
+/* ===== 上传新表情 / 管理 按钮：粉色样式 ===== */
 .sticker-upload-btn {
-    background: linear-gradient(135deg, #ff69b4, #ff1493);
-    color: white;
-    border: none;
-    border-radius: 12px;
-    padding: 10px;
+    background: linear-gradient(135deg, #ff9ec7 0%, #ff69b4 50%, #ff1493 100%) !important;
+    color: #fff !important;
+    border: 2px solid rgba(255, 255, 255, 0.7) !important;
+    border-radius: 14px !important;
+    padding: 10px 14px !important;
     font-size: 14px;
     font-weight: 600;
+    letter-spacing: 1px;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 4px 12px rgba(255, 20, 147, 0.35),
+                inset 0 1px 2px rgba(255, 255, 255, 0.5);
     cursor: pointer;
-    flex-shrink: 0;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.sticker-upload-btn:active {
+    transform: scale(0.95);
+    box-shadow: 0 2px 6px rgba(255, 20, 147, 0.4);
 }
 
-.sticker-preview-bar {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    background: #fdf2f8;
-    border: 1px solid #ffe0ec;
-    border-radius: 12px;
-    padding: 8px 12px;
-    margin-bottom: 10px;
+/* 管理按钮：浅粉底 + 深粉字 + 粉色边框，和上传按钮区分开 */
+#stickerManageBtn {
+    background: #ffe0ec !important;
+    color: #d63384 !important;
+    border: 2px solid #ff69b4 !important;
+    text-shadow: none;
+    box-shadow: 0 3px 8px rgba(255, 105, 180, 0.25);
 }
-.sticker-preview-bar img {
-    width: 48px;
-    height: 48px;
-    object-fit: contain;
-    border-radius: 8px;
-}
-.sticker-preview-remove {
-    margin-left: auto;
-    color: #999;
-    cursor: pointer;
-    font-size: 14px;
-}
-
-.comment-sticker-wrap {
-    position: relative;
-    display: inline-block;
-    margin-top: 4px;
-    cursor: pointer;
-}
-.comment-sticker {
-    max-width: 120px;
-    max-height: 120px;
-    width: auto;
-    height: auto;
-    border-radius: 10px;
-    object-fit: contain;
-    display: block;
-    background: transparent;
-    transition: transform 0.15s ease;
-}
-.comment-sticker-wrap:active .comment-sticker {
-    transform: scale(0.92);
-}
-.comment-sticker-collect-hint {
-    position: absolute;
-    right: -4px;
-    bottom: -4px;
-    background: linear-gradient(135deg, #ff69b4, #ff1493);
-    color: white;
-    font-size: 12px;
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
-    pointer-events: none;
-}
-.comment-sticker-wrap.collecting {
-    opacity: 0.6;
-    pointer-events: none;
-}
-
-.sticker-toast {
-    position: fixed;
-    left: 50%;
-    bottom: 90px;
-    transform: translate(-50%, 12px);
-    background: rgba(0,0,0,0.75);
-    color: white;
-    padding: 10px 18px;
-    border-radius: 20px;
-    font-size: 13px;
-    z-index: 10030;
-    opacity: 0;
-    transition: opacity 0.25s ease, transform 0.25s ease;
-    pointer-events: none;
-    white-space: nowrap;
-}
-.sticker-toast.show {
-    opacity: 1;
-    transform: translate(-50%, 0);
+#stickerManageBtn:active {
+    background: #ffc8de !important;
 }
 
 .heart {
