@@ -682,8 +682,15 @@ async function uploadVoiceBlob(blob, filename) {
         if (data.success) {
             pendingVoiceUrl = data.url;
             pendingVoiceDuration = data.duration || duration;
-            document.getElementById('voicePreviewAudio').src = API_BASE + pendingVoiceUrl;
-            document.getElementById('voicePreviewBar').style.display = 'flex';
+            if (voicePreviewAudio) voicePreviewAudio.pause();
+voicePreviewAudio = new Audio(API_BASE + pendingVoiceUrl);
+voicePreviewAudio.addEventListener('ended', () => {
+    const row = document.getElementById('voicePreviewRow');
+    row.classList.remove('playing');
+    row.querySelector('.vr-play').textContent = '▶';
+});
+document.getElementById('voicePreviewDur').textContent = pendingVoiceDuration + '"';
+document.getElementById('voicePreviewBar').style.display = 'flex';
             showStickerToast('语音已就绪，可发表评论 🎤');
         } else {
             showStickerToast(data.message || '语音上传失败');
@@ -696,12 +703,37 @@ async function uploadVoiceBlob(blob, filename) {
     }
 }
 
+let voicePreviewAudio = null;
+
+function toggleVoicePreview() {
+    if (!voicePreviewAudio) return;
+    const row = document.getElementById('voicePreviewRow');
+    const playBtn = row.querySelector('.vr-play');
+    if (!voicePreviewAudio.paused) {
+        voicePreviewAudio.pause();
+        voicePreviewAudio.currentTime = 0;
+        row.classList.remove('playing');
+        playBtn.textContent = '▶';
+        return;
+    }
+    voicePreviewAudio.play().catch(() => {});
+    row.classList.add('playing');
+    playBtn.textContent = '⏸';
+}
+
 function clearPendingVoice() {
     pendingVoiceUrl = null;
     pendingVoiceDuration = 0;
+    if (voicePreviewAudio) {
+        voicePreviewAudio.pause();
+        voicePreviewAudio = null;
+    }
+    const row = document.getElementById('voicePreviewRow');
+    if (row) {
+        row.classList.remove('playing');
+        row.querySelector('.vr-play').textContent = '▶';
+    }
     document.getElementById('voicePreviewBar').style.display = 'none';
-    const a = document.getElementById('voicePreviewAudio');
-    if (a) a.src = '';
 }
 
 function showVoiceOverlay(show) {
